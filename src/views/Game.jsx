@@ -18,6 +18,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
     const [inputDice1, setInputDice1] = useState("");
     const [inputDice2, setInputDice2] = useState("");
     const [playerInTurn, setPlayerInTurn] = useState({});
+    const [inactiveCounter, setInactiveCounter] = useState(0);
 
     useEffect(() => {
         if(!documentRef) return;
@@ -76,6 +77,9 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                         setInputDice1={setInputDice1}
                         setInputDice2={setInputDice2}
                         playersTurn={playersTurn}
+                        inactiveCounter={inactiveCounter}
+                        resetGameState={resetGameState}
+                        setInactiveCounter={setInactiveCounter}
                     />
                     : <WaitingTurn />
                 }

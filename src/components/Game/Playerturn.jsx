@@ -6,12 +6,11 @@ import { handleLeaveGame } from '../../util/databaseFunctions';
 /**
  * Handles all the users choices when its their turn
  */
-const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn }) => {
+const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
 
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
-  const [inactiveCounter, setInactiveCounter] = useState(0);
 
   /**
    * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
@@ -19,6 +18,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
+      console.log(inactiveCounter);
       if(inactiveCounter === 3) {
         handleLeaveGame(username, documentRef, resetGameState);
         updateNextPlayer();
@@ -27,7 +27,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
       const diceArray = handleThrowDices();
       await updateAllDices(diceArray[0], diceArray[1], true);
       await updateNextPlayer();
-      setInactiveCounter(inactiveCounter + 1);
+      setInactiveCounter(prevInactiveCounter => prevInactiveCounter + 1);
     };
 
     if(playersTurn) {
