@@ -64,7 +64,7 @@ const Developer = ({ username, documentRef, resetGameState }) => {
 
       <p className='flex relative bottom-[-220px] text-[16px] font-serif'> © 2023 FremmingLabs, Inc.</p>
 
-    </div>
+    </div> 
   )
 }
 
