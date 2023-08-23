@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { onSnapshot, runTransaction } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import PlayerTurn from "../components/Game/Playerturn";
 import WaitingTurn from "../components/Game/WaitingTurn";
 import GameBoard from "../components/Game/GameBoard"; 
-import { db } from "../config/firebase";
+import { handleLeaveGame } from "../util/databaseFunctions";
 
+/**
+ * The main game component, where the game is played
+ */
 const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameState }) => {
     
     const [players, setPlayers] = useState([]);
@@ -36,30 +39,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
         });
     
         return () => unsubscribe();
-    }, [documentRef]);
-
-    const handleLeaveGame = async () => {
-        try {
-            await runTransaction(db, async (transaction) => {
-                const docSnapshot = await transaction.get(documentRef);
-    
-                if (!docSnapshot.exists()) {
-                    throw new Error("Document does not exist!");
-                }
-    
-                const currentPlayers = docSnapshot.data().players;
-                const updatedPlayers = currentPlayers.filter(player => player.username !== username);
-    
-                transaction.update(documentRef, { players: updatedPlayers });
-            });
-    
-            console.log(username + " left the game");
-        } catch (err) {
-            console.error("Error: " + err.message);
-        }
-    
-        resetGameState();
-    };    
+    }, [documentRef]);   
     
     return(
         <>
@@ -103,7 +83,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                 }
                 <button
                     className='p-1 bg-gray-200 m-1'
-                    onClick={handleLeaveGame}
+                    onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
                 >
                     Leave
                 </button>   

@@ -1,7 +1,6 @@
 ### Må ordnes
 - Når feil oppstår på create siden så vis i feltet hva dom er feil, på de andre sidene få opp tekst en passende plass
 - (bildeopplastning ved username)???
-- Endre fra create-react-app til vite
 - Lage fler komponenter og bruke samme kode i, HOME så det ikke er dobbelt opp, nederste og header på hostlobby, noe på joinlobby og på gamelobby
 - (Finn måte å avslutte spillet)
 

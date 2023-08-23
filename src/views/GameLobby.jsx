@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { onSnapshot, runTransaction, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { handleLeaveGame } from "../util/databaseFunctions";
-import { styles } from "../styles/styles";
+import NavButton from "../components/Universal/NavButton";
+import Players from "../components/Universal/Players";
+import Header from "../components/Universal/Header";
 
 /**
  * GameLobby: Renders when the host starts the game with a "Waiting" state.
@@ -34,6 +36,9 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
         return () => unsubscribe();
     }, [documentRef]);
 
+    /**
+     * Checks if all players are ready and updates game state.
+     */
     useEffect(() => {
         const handleAllPlayersReady = async () => {
             const areAllPlayersReady = players => players.every(player => player.ready === true); 
@@ -54,7 +59,7 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
     });
 
     /**
-     * Checks if all players are ready and updates game state.
+     * Updates the players ready state in db when ready.
      */
     const handleReadyUp = async () => {
         if(isReady) return;
@@ -89,17 +94,8 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
         className="relative min-h-screen bg-cover bg-center flex flex-col justify-start items-center overflow-hidden h-screen w-full bg-gray-500" 
         style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
     >
-
-        {/* Header */}
-        <div className="flex flex-col justify-center items-center w-full pt-20">
-            <h1 className="text-3xl pr-7 font-serif">MEYER</h1>
-            <h1 className="text-3xl pl-7 font-serif">ONLINE</h1>
-        </div>
-
-        {/* Players */}
-        <div className="absolute top-40 w-[90%] flex flex-wrap justify-center items-center">
-            {players.map(player => (<p className={`mx-2 px-2 my-2 ${player.ready ? "text-green-400" : "text-red-400"} bg-gray-200 bg-opacity-20 p-1 text-center rounded-md font-roboto text-xl`} key={player.username}>{player.username}</p>))}
-        </div>
+        <Header mt="20" />
+        <Players players={players} />
 
         {/* Box */}
         <div className={`mt-[580px] w-full h-screen bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
@@ -109,18 +105,8 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
                     <p className="text-[#F79437] text-2xl font-oswald">{gameid}</p>
                 </div>
                 <div className="flex w-full items-center justify-center">
-                    <button
-                        className={`m-2 w-[120px] h-[45px] bg-[#A999FE] rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
-                        onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
-                    >
-                        Leave
-                    </button>
-                    <button
-                        className={`m-2 w-[120px] h-[45px] ${isReady ? "bg-green-500" : "bg-[#A999FE]"} rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
-                        onClick={handleReadyUp}
-                    >
-                        Ready
-                    </button>
+                    <NavButton text="Leave" onClickFunction={() => handleLeaveGame(username, documentRef, resetGameState)} />
+                    <NavButton text="Ready" onClickFunction={() => handleReadyUp()} />
                 </div>
             </div>
         </div>

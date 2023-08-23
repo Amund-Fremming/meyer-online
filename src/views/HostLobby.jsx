@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { updateDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
-import { styles } from "../styles/styles";
+import Header from "../components/Universal/Header";
+import NavButton from "../components/Universal/NavButton";
+import Players from "../components/Universal/Players";
 
 /**
  * Displays the host's game lobby and manages game start or termination.
@@ -56,17 +58,8 @@ const HostLobby = ({ gameid, username, setView, resetGameState, documentRef, sav
                 className="relative min-h-screen bg-cover bg-center flex flex-col justify-start pt-20 items-center h-screen w-full bg-gray-500 overflow-hidden" 
                 style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
             >
-
-                {/* Players */}
-                <div className="absolute top-52 w-[70%] flex flex-wrap justify-center items-center">
-                    {players.map(player => (<p className="mx-2 px-2 my-2 bg-gray-200 bg-opacity-20 p-1 text-center rounded-md text-gray-300 font-roboto text-xl" key={player.username}>{player.username}</p>))}
-                </div>
-
-                {/* Header */}
-                <div className="flex flex-col items-center w-full">
-                    <h1 className="text-3xl pr-7 font-serif">MEYER</h1>
-                    <h1 className="text-3xl pl-7 font-serif">ONLINE</h1>
-                </div>
+                <Players players={players} />
+                <Header />
 
                 {/* Box */}
                 <div className={`mt-[580px] w-full h-screen bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
@@ -76,18 +69,8 @@ const HostLobby = ({ gameid, username, setView, resetGameState, documentRef, sav
                             <p className="text-[#F79437] text-2xl font-oswald">{gameid}</p>
                         </div>
                         <div className="flex w-full items-center justify-center">
-                            <button
-                                className={`m-2 w-[120px] h-[45px] bg-[#A999FE] rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
-                                onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
-                            >
-                                Leave
-                            </button>
-                            <button
-                                className={`m-2 w-[120px] h-[45px] bg-[#A999FE] rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
-                                onClick={handleStartGame}
-                            >
-                                Start Game
-                            </button>
+                            <NavButton text="Leave" onClickFunction={() => handleLeaveGame(username, documentRef, resetGameState)} />
+                            <NavButton text="Start Game" onClickFunction={() => handleStartGame()} />
                         </div>
                     </div>
                 </div>

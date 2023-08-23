@@ -3,6 +3,7 @@ import { BiGame } from "react-icons/bi";
 import { BsFillPersonFill } from "react-icons/bs";
 import { collection, doc, addDoc, getDocs, query, where, runTransaction } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import Header from "../components/Universal/Header";
 
 /**
  * Initial screen allowing users to either host or join a game.
@@ -14,6 +15,9 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
     const collectionRef = collection(db, "games");
     const q = query(collectionRef, where("gameid", "==", gameid));
 
+    /**
+     * On initial load the user gets a message to add the app to homescreen.
+     */
     useEffect(() => {
         if(localStorage.getItem("isNotified") === "true") return;
         
@@ -160,161 +164,76 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
         }
     };
 
-    if(hostView) {
-        return(
-            <div
-                className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
-                style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
-            >
+    return(
+        <div
+            className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
+            style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
+        >
+            <Header mb="16" />
 
-                {/* Header */}
-                <div className="flex flex-col justify-center items-center mb-16 w-full">
-                    <h1 className="text-3xl pr-7 font-serif">MEYER</h1>
-                    <h1 className="text-3xl pl-7 font-serif">ONLINE</h1>
-                </div>
-
-                {/* Selection */}
-                <div className="flex justify-between w-[265px] text-white">
-                    <p
-                        className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
-                        onClick={() => setHostView(true)}
-                    >
-                        Host
-                    </p>
-                    <p
-                        onClick={() => setHostView(false)}
-                        className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
-                    >
-                        Join
-                    </p>
-                </div>
-                
-                {/* Box */}
-                <div className={`mt-10 w-[350px] h-[280px] bg-white rounded-md flex flex-col justify-center items-center z-1`}>
-
-                    {/* Half circle */}
-                    <div className={`w-16 h-10 rounded-t-full relative right-20 top-[-20px] bg-white`} />
-
-                    <div className="flex justify-start px-2  items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600]">
-                        <p className="text-3xl text-[#01ADCB]"><BiGame/></p>
-                        <input 
-                            className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
-                            placeholder="Game ID"
-                            onChange={e => setGameid(e.target.value)}
-                        />
-                    </div>
-                    <div className="mt-6 flex justify-start px-2 items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600]">
-                        <p className="text-3xl text-[#01ADCB]"><BsFillPersonFill/></p>
-                        <input
-                            className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
-                            placeholder="Username"
-                            onChange={e => setUsername(e.target.value)}
-                        />
-                    </div>
-                    <button
-                        className="w-[60%] mt-6 h-[25%] bg-[#01ADCB] rounded-xl text-[#2D0600] text-xl mb-8 font-oswald"
-                        onClick={handleHostedGame}
-                    >
-                        Host
-                    </button>
-                </div>
-
-                {/* Other views */}
-                <div className="text-gray-300 flex mt-6">
-                    <p
-                        className="px-6 cursor-pointer"
-                        onClick={() => setView("TUTORIAL")}
-                    >
-                        Howto
-                    </p>
-                    <p
-                        className="px-6 cursor-pointer"
-                        onClick={() => setView("DEVELOPER")}
-                    >
-                        Developer
-                    </p>
-                </div>
-
+            {/* Selection */}
+            <div className="flex justify-between w-[265px] text-white">
+                <p
+                    className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
+                    onClick={() => setHostView(true)}
+                >
+                    Host
+                </p>
+                <p
+                    onClick={() => setHostView(false)}
+                    className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
+                >
+                    Join
+                </p>
             </div>
-        );
-    } else {
-        return(
-            <div
-                className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500"
-                style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
-            >
+            
+            {/* Box */}
+            <div className={`mt-10 w-[350px] h-[280px] bg-white rounded-md flex flex-col justify-center items-center z-1`}>
 
-                {/* Header */}
-                <div className="flex flex-col justify-center items-center mb-16 w-full">
-                    <h1 className="text-3xl pr-7 font-serif">MEYER</h1>
-                    <h1 className="text-3xl pl-7 font-serif">ONLINE</h1>
+                {/* Half circle */}
+                <div className={`w-16 h-10 rounded-t-full relative ${hostView ? "right-20" : "left-20"} top-[-20px] bg-white`} />
+
+                <div className="flex justify-start px-2  items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600]">
+                    <p className={`text-3xl ${hostView ? "text-[#01ADCB]" : "text-[#A999FE]"}`}><BiGame/></p>
+                    <input 
+                        className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
+                        placeholder="Game ID"
+                        onChange={e => setGameid(e.target.value)}
+                    />
                 </div>
-
-                {/* Selection */}
-                <div className="flex justify-between w-[265px] text-white">
-                    <p
-                        className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
-                        onClick={() => setHostView(true)}
-                    >
-                        Host
-                    </p>
-                    <p
-                        onClick={() => setHostView(false)}
-                        className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
-                    >
-                        Join
-                    </p>
+                <div className="mt-6 flex justify-start px-2 items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600]">
+                    <p className={`text-3xl ${hostView ? "text-[#01ADCB]" : "text-[#A999FE]"}`}><BsFillPersonFill/></p>
+                    <input
+                        className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
+                        placeholder="Username"
+                        onChange={e => setUsername(e.target.value)}
+                    />
                 </div>
-                
-                {/* Box */}
-                <div className={`mt-10 w-[350px] h-[280px] bg-white  rounded-md flex flex-col justify-center items-center z-1`}>
-
-                    {/* Half circle */}
-                    <div className={`w-16 h-10 rounded-t-full relative left-20 top-[-20px] bg-white`} />
-
-                    <div className="flex justify-start px-2  items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600]">
-                        <p className="text-3xl text-[#A999FE]"><BiGame/></p>
-                        <input 
-                            className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
-                            placeholder="Game ID"
-                            onChange={e => setGameid(e.target.value)}
-                        />
-                    </div>
-                    <div className="mt-6 flex justify-start px-2 items-end w-[80%] h-[20%] border-b-[3px] border-[#2D0600] font-serif">
-                        <p className="text-3xl text-[#A999FE]"><BsFillPersonFill/></p>
-                        <input
-                            className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white`}
-                            placeholder="Username"
-                            onChange={e => setUsername(e.target.value)}
-                        />
-                    </div>
-                    <button
-                        className="w-[60%] mt-6 h-[25%] bg-[#A999FE] rounded-xl text-[#2D0600] text-xl mb-8 font-oswald"
-                        onClick={handleJoinGame}
-                    >
-                        Join
-                    </button>
-                </div>
-
-                {/* Other views */}
-                <div className="text-gray-300 flex mt-6">
-                    <p
-                        className="px-6 cursor-pointer"
-                        onClick={() => setView("TUTORIAL")}
-                    >
-                        Howto
-                    </p>
-                    <p
-                        className="px-6 cursor-pointer"
-                        onClick={() => setView("DEVELOPER")}
-                    >
-                        Developer
-                    </p>
-                </div>
-
+                <button
+                    className={`w-[60%] mt-6 h-[25%] ${hostView ? "bg-[#01ADCB]" : "bg-[#A999FE]"} rounded-xl text-[#2D0600] text-xl mb-8 font-oswald`}
+                    onClick={hostView ? handleHostedGame : handleJoinGame}
+                >
+                    {hostView ? "Host" : "Join"}
+                </button>
             </div>
-        );
-    }
+
+            {/* Other views */}
+            <div className="text-gray-300 flex mt-6">
+                <p
+                    className="px-6 cursor-pointer"
+                    onClick={() => setView("TUTORIAL")}
+                >
+                    Howto
+                </p>
+                <p
+                    className="px-6 cursor-pointer"
+                    onClick={() => setView("DEVELOPER")}
+                >
+                    Developer
+                </p>
+            </div>
+        </div>
+    );
 };
 
 export default Home;

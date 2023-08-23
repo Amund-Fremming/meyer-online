@@ -1,6 +1,9 @@
 import React from 'react'
 
-function InfoCard({ text, image }) {
+/**
+ * Section card for Tutorial component
+ */
+const InfoCard = ({ text, image }) => {
   return (
     <div>
       

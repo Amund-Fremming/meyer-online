@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { handleLeaveGame } from '../util/databaseFunctions';
 
+/**
+ * Short page about the developer and how to contact
+ */
 const Developer = ({ username, documentRef, resetGameState }) => {
 
   const [profile, setProfile] = useState("me-pixel.JPG");
 
+  /**
+   * Timer for the image to make a wink effect.
+   */
   useEffect(() => {
     const timer = setInterval(() => {
       if(profile === "me-pixel.JPG") {
