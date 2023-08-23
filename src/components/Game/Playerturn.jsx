@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { runTransaction, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import { handleLeaveGame } from '../../util/databaseFunctions';
 
 /**
  * Handles all the users choices when its their turn
@@ -10,6 +11,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
+  const [inactiveCounter, setInactiveCounter] = useState(0);
 
   /**
    * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
@@ -17,9 +19,15 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
+      if(inactiveCounter === 3) {
+        handleLeaveGame(username, documentRef, resetGameState);
+        updateNextPlayer();
+      }
+
       const diceArray = handleThrowDices();
       await updateAllDices(diceArray[0], diceArray[1], true);
       await updateNextPlayer();
+      setInactiveCounter(inactiveCounter + 1);
     };
 
     if(playersTurn) {

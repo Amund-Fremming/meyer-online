@@ -2,6 +2,7 @@
 - Når feil oppstår på create siden så vis i feltet hva dom er feil, på de andre sidene få opp tekst en passende plass
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
+- Lage tutorial komponent, avsnitt med grafisk figur (kvist)
 
 ### Neste
 - Lage metode for sjekk av om man slo personen før med terning verdi før neste spiller oppateres
@@ -9,8 +10,6 @@
 
 - Lage GameBoard komponent som viser spillere på bordet og hva de kastet sist tur
 
-- Lage tutorial komponent, avsnitt med grafisk figur (kvist)
- 
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
 
 - beta testing med noen få brukere, så fikse feil
