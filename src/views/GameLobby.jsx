@@ -5,6 +5,7 @@ import { handleLeaveGame } from "../util/databaseFunctions";
 import NavButton from "../components/Universal/NavButton";
 import Players from "../components/Universal/Players";
 import Header from "../components/Universal/Header";
+import { styles } from "../styles/styles";
 
 /**
  * GameLobby: Renders when the host starts the game with a "Waiting" state.
@@ -106,7 +107,13 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
                 </div>
                 <div className="flex w-full items-center justify-center">
                     <NavButton text="Leave" onClickFunction={() => handleLeaveGame(username, documentRef, resetGameState)} />
-                    <NavButton text="Ready" onClickFunction={() => handleReadyUp()} />
+
+                    <button
+                        className={`m-2 w-[120px] h-[45px] ${isReady ? "bg-green-400" : "bg-[#A999FE]"} rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
+                        onClick={handleReadyUp}
+                    >
+                        Ready
+                    </button>
                 </div>
             </div>
         </div>

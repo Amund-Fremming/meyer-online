@@ -49,14 +49,12 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                 <div className="m-2 p-1 bg-gray-200">
                     <h1 className="text-xl font-bold">Players</h1>
                     {
-                        !players ? "" :
                         players.map(player => (
                             <p key={player.username}>{player.username} rolled dices: {player.inputDice1 > player.inputDice2 ? player.inputDice1 + "" + player.inputDice2 : player.inputDice2 + "" + player.inputDice1}</p>
                         ))
                     }
                 </div>
 
-                {/* Game board */}
                 <GameBoard
                     players={players}
                     playerInTurn={playerInTurn}

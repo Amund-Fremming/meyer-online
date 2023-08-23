@@ -4,8 +4,6 @@
 - (Finn måte å avslutte spillet)
 
 ### Neste
-- Fikse oppdatering av terninger når timer løper ut, justere tid på timer
-
 - Lage metode for sjekk av om man slo personen før med terning verdi før neste spiller oppateres
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling
 

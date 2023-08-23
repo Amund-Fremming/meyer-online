@@ -12,21 +12,18 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   const [bustSuccess, setBustSuccess] = useState(false);
 
   /**
-   * This method will skip a player if he uses too long time.
+   * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
    */
-  // WHEN THE TIMEPOUT TRIGGERS, THE VALUES DOES NOT GET UPDATED IN THE DB, THIS CAN BE CAUSED BY THE ASYNC USEEFFECT.
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
-      handleThrowDices();
-      setInputDice1(dice1);
-      setInputDice2(dice2);
-      await updateAllDices();
+      const diceArray = handleThrowDices();
+      await updateAllDices(diceArray[0], diceArray[1], true);
       await updateNextPlayer();
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 5000);
+      timeout = setTimeout(handleTimeout, 10000);
     }
 
     return () => {
@@ -56,14 +53,22 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   /** 
    * Handles the throw dice mechanism
    */
-  const handleThrowDices = () => {
+  const handleThrowDices = (timeoutPlayer) => {
     // Play dice annimation
     const dice1Local = Math.floor(Math.random() * 6) + 1;
     const dice2Local = Math.floor(Math.random() * 6) + 1;
+
+    if(timeoutPlayer) {
+     setInputDice1(dice1Local);
+     setInputDice2(dice2Local);
+    }
+
     setDice1(dice1Local);
     setDice2(dice2Local);
     // Show lie or play dices to go futher in game logic
     setThrownDices(true);
+
+    return [dice1Local, dice2Local];
   };
 
   const handleSubmitDices = () => {
@@ -73,7 +78,15 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   /**
    * Takes in the values the player decides that the dices are, we set the previousplayer dice values to the current player here, because the next turn the currentplayer becomes the previous. 
    */
-  const updateAllDices = async () => {
+  const updateAllDices = async (dice1Param, dice2Param, timedOutPlayer) => {
+
+    if(timedOutPlayer) {
+      dice1 = dice1Param;
+      dice2 = dice2Param;
+      inputDice1 = dice1Param;
+      inputDice2 = dice2Param;
+    }
+
     try {
       const updateDiceTransaction = async (transaction) => {
         const docSnapshot = await transaction.get(documentRef);
@@ -141,8 +154,6 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
         transaction.update(documentRef, { currentPlayer: currentPlayer });
       };
 
-      setDice1(0);
-      setDice2(0);
       console.log("Updated next player");
       await runTransaction(db, updateTransaction);
     } catch (err) {
