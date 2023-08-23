@@ -1,7 +1,7 @@
 ### Må ordnes
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
-- Lage tutorial komponent, avsnitt med grafisk figur (kvist)
+- Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
 ### Neste
 - Lage metode for sjekk av om man slo personen før med terning verdi før neste spiller oppateres
