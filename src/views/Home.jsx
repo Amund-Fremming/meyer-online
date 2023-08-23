@@ -11,6 +11,7 @@ import Header from "../components/Universal/Header";
 const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setView, setDocumentRef }) => {
 
     const [hostView, setHostView] = useState(true);
+    const [alertUser, setAlertUser] = useState("");
 
     const collectionRef = collection(db, "games");
     const q = query(collectionRef, where("gameid", "==", gameid));
@@ -72,12 +73,16 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
             const q = query(collectionRef, where("gameid", "==", gameid));
             const querySnapshot = await getDocs(q);
 
-            if(gameid === "" || username === "") {
-                alert("Fill out username/gameid");
-            } else if(username.length > 14 || gameid.length > 14) {
-                alert("Too long username or gameid (Max 14)");
+            if(gameid === "") {
+                setAlertUser("Fill out gameid!");
+            } else if(username === "") {
+                setAlertUser("Fill out username!");
+            } else if(gameid.length > 14) {
+                setAlertUser("Too long game id!");
+            } else if(username.length > 14) {
+                setAlertUser("Too long username!");
             } else if(!querySnapshot.empty) {
-                alert("Game id in use");
+                setAlertUser("Game id in use!");
             } else {
                 createGame();
                 resetGameState();
@@ -131,11 +136,11 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                 const transactionResult = await runTransaction(db, joinTransaction);
     
                 if (transactionResult === "USERNAME_EXISTS") {
-                    alert(`Username: ${username} is already in use!`);
+                    setAlertUser(`${username} is already in use!`);
                     return;
                 }
                 if(transactionResult === "GAME_STARTED") {
-                    alert("Game has started");
+                    setAlertUser("Game has started!");
                     return;
                 }
                 
@@ -144,7 +149,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                 setView("JOIN_LOBBY");
     
             } else {
-                alert(`Game id: ${gameid}, does not exist`);
+                setAlertUser(`${gameid} does not exist!`);
             }
         } catch (err) {
             console.log("Error: " + err.message);
@@ -155,10 +160,14 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
      * Verifies user input before attempting to join a game.
      */
     const handleJoinGame = async () => {
-        if (username === "" || gameid === "") {
-            alert("Fill out username/gameid");
-        } else if(username.length > 14 || gameid.length > 14) {
-            alert("Too long username or gameid (Max 14)");
+        if(gameid === "") {
+            setAlertUser("Fill out gameid!");
+        } else if(username === "") {
+            setAlertUser("Fill out username!");
+        } else if(gameid.length > 14) {
+            setAlertUser("Too long game id!");
+        } else if(username.length > 14) {
+            setAlertUser("Too long username!");
         } else {
             playerJoinGame();
         }
@@ -169,10 +178,11 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
             className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
             style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
         >
+            <p className="text-red-400 absolute top-[50px] lg:top-[170px] xl:top-[170px] md:top-[120px] text-2xl font-oswald">{alertUser}</p>
             <Header mb="16" />
 
             {/* Selection */}
-            <div className="flex justify-between w-[265px] text-white">
+            <div className="flex justify-between w-[265px] mt-16 text-white">
                 <p
                     className="text-gray-300 text-xl mx-8 cursor-pointer font-oswald"
                     onClick={() => setHostView(true)}
@@ -198,6 +208,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                     <input 
                         className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
                         placeholder="Game ID"
+                        value={gameid}
                         onChange={e => setGameid(e.target.value)}
                     />
                 </div>
@@ -206,6 +217,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                     <input
                         className={`mx-3 text-xl placeholder-gray-400 outline-none text-[#2D0600] bg-white font-serif`}
                         placeholder="Username"
+                        value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
                 </div>
