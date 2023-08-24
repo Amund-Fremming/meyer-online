@@ -108,7 +108,7 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
                     <NavButton text="Leave" onClickFunction={() => handleLeaveGame(username, documentRef, resetGameState)} />
 
                     <button
-                        className={`m-2 w-[120px] h-[45px] ${isReady ? "bg-green-400" : "bg-[#A999FE]"} rounded-xl text-xl text-[${styles.textcolor}] font-oswald`}
+                        className={`m-2 w-[120px] h-[45px] ${isReady ? "bg-green-400" : "bg-[#A999FE] "} rounded-xl text-xl text-[${styles.textcolor}] font-oswald `}
                         onClick={handleReadyUp}
                     >
                         Ready

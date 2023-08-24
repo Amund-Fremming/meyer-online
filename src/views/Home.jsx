@@ -4,6 +4,8 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { collection, doc, addDoc, getDocs, query, where, runTransaction } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import Header from "../components/Universal/Header";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 /**
  * Initial screen allowing users to either host or join a game.
@@ -175,7 +177,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
 
     return(
         <div
-            className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
+            className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
             style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
         >
             <p className="text-red-400 absolute top-[180px] lg:top-[170px] xl:top-[170px] md:top-[120px] text-2xl font-oswald">{alertUser}</p>
@@ -222,7 +224,8 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                     />
                 </div>
                 <button
-                    className={`w-[60%] mt-6 h-[25%] ${hostView ? "bg-[#01ADCB]" : "bg-[#A999FE]"} rounded-xl text-[#2D0600] text-xl mb-8 font-oswald`}
+                    className={`w-[60%] mt-6 h-[25%] ${hostView ? "bg-[#01ADCB]" : "bg-[#A999FE]"} rounded-xl text-[#2D0600] text-xl mb-8 font-oswald cursor-pointer active:translate-y-2 active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841] transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
+                    border-b-[1px] border-blue-400 active:border-b-[0px]`}
                     onClick={hostView ? handleHostedGame : handleJoinGame}
                 >
                     {hostView ? "Host" : "Join"}

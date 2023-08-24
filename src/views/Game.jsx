@@ -96,4 +96,3 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
 };
 
 export default Game;
-w
