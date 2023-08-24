@@ -178,7 +178,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
             className="relative min-h-screen bg-cover bg-center flex flex-col justify-center items-center h-screen w-full bg-gray-500" 
             style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
         >
-            <p className="text-red-400 absolute top-[50px] lg:top-[170px] xl:top-[170px] md:top-[120px] text-2xl font-oswald">{alertUser}</p>
+            <p className="text-red-400 absolute top-[180px] lg:top-[170px] xl:top-[170px] md:top-[120px] text-2xl font-oswald">{alertUser}</p>
             <Header top="10" />
 
             {/* Selection */}
