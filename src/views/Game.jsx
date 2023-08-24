@@ -89,7 +89,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                     onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
                 >
                     Leave
-                </button>   
+                </button>
             </div>
         </>
     );
