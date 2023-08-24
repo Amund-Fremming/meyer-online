@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { runTransaction, updateDoc } from 'firebase/firestore';
+import { runTransaction, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { handleLeaveGame } from '../../util/databaseFunctions';
 
 /**
  * Handles all the users choices when its their turn
  */
-const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
+const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
 
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
+  const [game, setGame] = useState({});
+
+  useEffect(() => {
+    if(!documentRef) return;
+
+    const unsubscribe = onSnapshot(documentRef, snapshot => {
+        if(!snapshot.data()) {
+            console.log("Game deleted");
+            alert("Game deleted");
+            resetGameState();
+            return;
+        }
+
+        setGame(snapshot.data());
+    });
+
+    return () => unsubscribe();
+  }, [documentRef]);
 
   /**
    * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
@@ -31,7 +49,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 10000);
+      timeout = setTimeout(handleTimeout, 300000);
     }
 
     return () => {
@@ -83,9 +101,16 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
    * This method updates the dices, then updates the next player
    */
   const handleSubmitDices = async () => {
-    // Mulig det skjer feil her, kan være terninger ikke er oppdatert før updateNextPlayer kjører
-    updateAllDices();
-    await updateNextPlayer();
+    await updateAllDices("0", "0", false);
+    
+    // Wait for the onSnapshot update to complete and use the updated game data
+    const hasImproved = hasScoreImproved();
+
+    // await updateNextPlayer();    
+
+    //await updateNextPlayer();
+      // If loss, alert player, make him hit ok, then update next player
+      // If win, nextPlayer
   };
 
   /**
@@ -139,6 +164,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
     } catch(err) {
       console.log("Error: " + err.message);
     }
+    console.log("Player dices updated");
   };
 
   /**
@@ -217,7 +243,18 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   const hasScoreImproved = () => {
     // Gets previuous player score
     // Gets current player score
+    console.log(game);
+
+    const previousPlayerScore = game.previousPlayer.inputDice1 + " " + game.previousPlayer.inputDice2;
+    const currentPlayerScore = playersTurn.inputDice1 + " " + playersTurn.inputDice2;
+
+    console.log("Prev Player Score: " + previousPlayerScore + `P: ${game.previousPlayer.username}`);
+    console.log("Curr Player Score: " + currentPlayerScore + `P: ${game.currentPlayer.username}`);
+
     // Calculate their indeger values
+    // const previousPlayerIntegerScore = diceValueToIndex();
+    // const currentPlayerIntegerScore = diceValueToIndex();
+
     // Compare
     // Print out a statement if user succeeds or losses
     // If loss, resetGame and nextPlayer
@@ -329,6 +366,16 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
           onClick={handleSubmitDices}
         >
           Play dices
+        </button>
+        <button
+          className='m-2 p-1 bg-gray-200'
+          onClick={updateNextPlayer}
+        >
+          nextPlayer
+        </button>
+
+        <button onClick={() => console.log(game)}>
+          gamePrint
         </button>
       </div>
     );

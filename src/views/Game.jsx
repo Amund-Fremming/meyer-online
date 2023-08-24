@@ -77,6 +77,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                         setInputDice1={setInputDice1}
                         setInputDice2={setInputDice2}
                         playersTurn={playersTurn}
+                        playerInTurn={playerInTurn}
                         inactiveCounter={inactiveCounter}
                         resetGameState={resetGameState}
                         setInactiveCounter={setInactiveCounter}
