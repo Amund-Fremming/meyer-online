@@ -4,8 +4,9 @@
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
 ### Neste
-- Lage metode for sjekk av om man slo personen før med terning verdi før neste spiller oppateres
+- Sette timer til lavere verdi
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling
+
 - Lage GameBoard komponent som viser spillere på bordet og hva de kastet sist tur
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
 - beta testing med noen få brukere, så fikse feil
