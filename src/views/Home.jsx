@@ -179,7 +179,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
             style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
         >
             <p className="text-red-400 absolute top-[50px] lg:top-[170px] xl:top-[170px] md:top-[120px] text-2xl font-oswald">{alertUser}</p>
-            <Header mb="16" />
+            <Header top="10" />
 
             {/* Selection */}
             <div className="flex justify-between w-[265px] mt-16 text-white">

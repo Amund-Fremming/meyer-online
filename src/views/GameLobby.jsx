@@ -92,14 +92,13 @@ const GameLobby = ({ resetGameState, gameid, username, setView, documentRef, sav
 
     return(
         <div
-        className="relative min-h-screen bg-cover bg-center flex flex-col justify-start items-center overflow-hidden h-screen w-full bg-gray-500" 
-        style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
-    >
+            className="min-h-screen bg-cover bg-center flex flex-col justify-end items-center h-screen w-full bg-gray-500" style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
+        >
         <Header mt="20" />
         <Players players={players} />
 
         {/* Box */}
-        <div className={`mt-[580px] w-full h-screen bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
+        <div className={`w-full h-30 bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
             <div className={`bg-[#281F3C] shadow-xl shadow-gray-800 w-[350px] h-[170px] rounded-xl translate-y-[-100px] flex flex-col justify-center items-center`}>
                 <div className="flex ml-24 w-full">
                     <p className={`mb-4 text-gray-300 text-2xl font-oswald`}>🎲 🎲 Game ID: &nbsp;</p>

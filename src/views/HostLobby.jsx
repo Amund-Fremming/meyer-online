@@ -55,14 +55,14 @@ const HostLobby = ({ gameid, username, setView, resetGameState, documentRef, sav
     if(true) {
         return(
             <div
-                className="relative min-h-screen bg-cover bg-center flex flex-col justify-start pt-20 items-center h-screen w-full bg-gray-500 overflow-hidden" 
+                className="min-h-screen bg-cover bg-center flex flex-col justify-end pt-20 items-center h-screen w-full bg-gray-500 overflow-hidden" 
                 style={{ backgroundImage: `url('${require("../img/lake.png")}')` }}
             >
+                <Header top="" />
                 <Players players={players} />
-                <Header />
 
                 {/* Box */}
-                <div className={`mt-[580px] w-full h-screen bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
+                <div className={`w-full h-30 bg-[#2A2E54] rounded-t-3xl flex flex-col justify-start items-center z-1`}>
                     <div className={`bg-[#281F3C] shadow-xl shadow-gray-800 w-[350px] h-[170px] rounded-xl translate-y-[-100px] flex flex-col justify-center items-center`}>
                         <div className="flex ml-24 w-full">
                             <p className={`mb-4 text-gray-300 text-2xl font-oswald`}>🎲 🎲 Game ID: &nbsp;</p>

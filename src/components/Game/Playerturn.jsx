@@ -60,11 +60,11 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   /**
    * Handles the logic if a player thinks the previous player has cheated.
    */
-  const handleBust = () => {
-    const previousPlayer = game.previousPlayer;
+  const handleBust = async () => {
+    const gameData = await fetchGameData();
     setTryBust(true);
 
-    if(previousPlayer.inputDice1+"" !== previousPlayer.dice1+"" || previousPlayer.inputDice2+"" !== previousPlayer.dice2+"") {
+    if(gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"") {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
       alertPlayerBusted();
@@ -117,7 +117,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
    */
   const handleSubmitDices = async () => {
     await updateAllDices("0", "0", false);
-    const hasImproved = await hasScoreImproved();
+    const gameData = await fetchGameData();
+
+    const hasImproved = await hasScoreImproved(gameData);
 
     if(hasImproved) {
       alert("Your score is good!");
@@ -192,6 +194,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     setInputDice1("");
     setInputDice2("");
 
+    const gameData = await fetchGameData();
+
     try {
       const updateTransaction = async (transaction) => {
         const docSnapshot = await transaction.get(documentRef);
@@ -213,7 +217,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
 
         transaction.update(documentRef, {
           currentPlayer: currentPlayer,
-          previousPlayer: game.players[previousPlayerIndex],
+          previousPlayer: gameData.players[previousPlayerIndex],
         });
       };
 
@@ -264,72 +268,72 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     setDice2("");
     setInputDice1("");
     setInputDice2("");
+    setThrownDices(false);
   };
 
   /**
    * Checks if the current player beat or tied the score to the previous player
    */
-  const hasScoreImproved = async () => {
-    const gameData = await fetchGameData();
-
-    const previousPlayerIntegerScore = diceValueToIndex(gameData.previousPlayer.inputDice1, game.previousPlayer.inputDice2);
-    const currentPlayerIntegerScore = diceValueToIndex(gameData.currentPlayer.inputDice1, game.currentPlayer.inputDice2);
+  const hasScoreImproved = async (gameData) => {
+    const previousPlayerIntegerScore = diceValueToIndex(gameData.previousPlayer.inputDice1, gameData.previousPlayer.inputDice2);
+    const currentPlayerIntegerScore = diceValueToIndex(gameData.currentPlayer.inputDice1, gameData.currentPlayer.inputDice2);
 
     if(previousPlayerIntegerScore[0] > currentPlayerIntegerScore[0]) {
       return false;
     }
+
     return true;
   };
 
   const diceValueToIndex = (dice1, dice2) => {
-    const dices = dice1 > dice2 ? dice1 + dice2 : dice2 + dice1;
+    const dices = dice1 > dice2 ? dice1 + "" + dice2 : dice2 + "" + dice1;
     switch (dices) {
-        case "21":
-            return [20, "MEYER"];
-        case "31":
-            return [19, "SMALL MEYER"];
+      case "21":
+          return [20, "MEYER"];
+      case "31":
+          return [19, "SMALL MEYER"];
 
-        case "66":
-            return [18, "PAIR"];
-        case "55":
-            return [17, "PAIR"];
-        case "44":
-            return [16, "PAIR"];
-        case "33":
-            return [15, "PAIR"];
-        case "22":
-            return [14, "PAIR"];
-        case "11":
-            return [13, "PAIR"];
+      case "66":
+          return [18, "PAIR"];
+      case "55":
+          return [17, "PAIR"];
+      case "44":
+          return [16, "PAIR"];
+      case "33":
+          return [15, "PAIR"];
+      case "22":
+          return [14, "PAIR"];
+      case "11":
+          return [13, "PAIR"];
 
-        case "65":
-            return [12, "VALUE"];
-        case "64":
-            return [11, "VALUE"];
-        case "63":
-            return [10, "VALUE"];
-        case "62":
-            return [9, "VALUE"];
-        case "61":
-            return [8, "VALUE"];
-        case "54":
-            return [7, "VALUE"];
-        case "53":
-            return [6, "VALUE"];
-        case "52":
-            return [5, "VALUE"];
-        case "51":
-            return [4, "VALUE"];
-        case "43":
-            return [3, "VALUE"];
-        case "42":
-            return [2, "VALUE"];
-        case "41":
-            return [1, "VALUE"];
-        case "32":
-            return [0, "VALUE"];
-        default:
-            return [0, "UNKNOWN"];
+      case "65":
+          return [12, "VALUE"];
+      case "64":
+          return [11, "VALUE"];
+      case "63":
+          return [10, "VALUE"];
+      case "62":
+          return [9, "VALUE"];
+      case "61":
+          return [8, "VALUE"];
+      case "54":
+          return [7, "VALUE"];
+      case "53":
+          return [6, "VALUE"];
+      case "52":
+          return [5, "VALUE"];
+      case "51":
+          return [4, "VALUE"];
+      case "43":
+          return [3, "VALUE"];
+      case "42":
+          return [2, "VALUE"];
+      case "41":
+          return [1, "VALUE"];
+      case "32":
+          return [0, "VALUE"];
+      default:
+          return [0, "UNKNOWN"];
     }
   };
 
