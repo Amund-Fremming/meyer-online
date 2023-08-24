@@ -79,8 +79,13 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
     return [dice1Local, dice2Local];
   };
 
-  const handleSubmitDices = () => {
+  /**
+   * This method updates the dices, then updates the next player
+   */
+  const handleSubmitDices = async () => {
+    // Mulig det skjer feil her, kan være terninger ikke er oppdatert før updateNextPlayer kjører
     updateAllDices();
+    await updateNextPlayer();
   };
 
   /**
@@ -130,7 +135,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
         });
       };  
 
-      await runTransaction(db, updateDiceTransaction).then(async() => await updateNextPlayer());
+      await runTransaction(db, updateDiceTransaction);
     } catch(err) {
       console.log("Error: " + err.message);
     }
@@ -207,6 +212,69 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
   };
 
   /**
+   * Checks if the current player beat or tied the score to the previous player
+   */
+  const hasScoreImproved = () => {
+    // Gets previuous player score
+    // Gets current player score
+    // Calculate their indeger values
+    // Compare
+    // Print out a statement if user succeeds or losses
+    // If loss, resetGame and nextPlayer
+
+  };
+
+  const diceValueToIndex = (dice1, dice2) => {
+    const dices = dice1 > dice2 ? dice1 + dice2 : dice2 + dice1;
+    switch(dices) {
+      case dices === "21":
+        return ["20", "MEYER"];
+      case dices === "31":
+        return ["19", "SMALL MEYER"];
+
+      case dices === "66":
+        return ["18", "PAIR"];
+      case dices === "55":
+        return ["17", "PAIR"];  
+      case dices === "44":
+        return ["16", "PAIR"];
+      case dices === "33":
+        return ["15", "PAIR"];
+      case dices === "22":
+        return ["14", "PAIR"];
+      case dices === "11":
+        return ["13", "PAIR"];
+
+      case dices === "65":
+        return ["12", "VALUE"];
+      case dices === "64":
+        return ["11", "VALUE"];
+      case dices === "63":
+        return ["10", "VALUE"];
+      case dices === "62":
+        return ["9", "VALUE"];
+      case dices === "61":
+        return ["8", "VALUE"];  
+      case dices === "54":
+        return ["7", "VALUE"];
+      case dices === "53":
+        return ["6", "VALUE"];
+      case dices === "52":
+        return ["5", "VALUE"];
+      case dices === "51":
+        return ["4", "VALUE"];
+      case dices === "43":
+        return ["3", "VALUE"];
+      case dices === "42":
+        return ["2", "VALUE"];
+      case dices === "41":
+        return ["1", "VALUE"];
+      case dices === "32":
+        return ["0", "VALUE"];
+    }
+  };
+
+  /**
    * Alerts the player that has been busted.
    */
   const alertPlayerBusted = () => {
@@ -229,7 +297,7 @@ const PlayerTurn = ({ documentRef, username, game, dice1, setDice1, dice2, setDi
           </button>
           <button
             className='m-2 p-1 bg-gray-200'
-            onClick={handleThrowDices}
+            onClick={() => handleThrowDices(false)}
           >
             Throw dice
           </button>

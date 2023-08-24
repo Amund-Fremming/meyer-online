@@ -31,15 +31,16 @@
 - Lage de fleste kallene til databasen først og så sende referansen videre til andre komponenter, kontra å hente ut referansen i hvert komponent. Blir mer effektivt program.
 - Bli bedre på å skrive kommentarer og dokumentasjon.
 - Ha kundemøter for å gjøre appen mer brukervennlig.
+- Designe appens flow før man starter å lage, enklere å dele opp komponenter å se hva man faktisk trenger.
 
 <br />
 
-### How to use gitpush.sh
+### How to use commandShortcuts.sh
 list all commands
 ```
-sh gitpush.sh help
+sh commandShortcuts help
 ```
 Push to git, create a build and deploy to firebase, this requires that you have initialized your firebase project first.
 ```
-sh gitpush <commit msg> prod
+sh commandShortcuts <commit msg> prod
 ```
