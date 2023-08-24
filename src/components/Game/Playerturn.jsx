@@ -91,26 +91,42 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
 
     setDice1(dice1Local);
     setDice2(dice2Local);
-    // Show lie or play dices to go futher in game logic
     setThrownDices(true);
 
     return [dice1Local, dice2Local];
   };
+
+  const fetchGameData = async () => {
+    try {
+      const gameData = await runTransaction(db, async (transaction) => {
+        const snapshot = await transaction.get(documentRef);
+        if (!snapshot.exists) {
+          throw new Error("Document does not exist!");
+        }
+        return snapshot.data();
+      });
+  
+      return gameData;
+    } catch (err) {
+      console.log("Error fetching game data: " + err.message);
+    }
+  };  
 
   /**
    * This method updates the dices, then updates the next player
    */
   const handleSubmitDices = async () => {
     await updateAllDices("0", "0", false);
-    
-    // Wait for the onSnapshot update to complete and use the updated game data
-    const hasImproved = hasScoreImproved();
+    const hasImproved = await hasScoreImproved();
 
-    // await updateNextPlayer();    
-
-    //await updateNextPlayer();
+    if(hasImproved) {
+      alert("Your score is good!");
+      await updateNextPlayer();  
+    } else {
       // If loss, alert player, make him hit ok, then update next player
-      // If win, nextPlayer
+      alert("Your score is too low, you loose");
+      resetGame();
+    }
   };
 
   /**
@@ -156,7 +172,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
         transaction.update(documentRef, {
           currentPlayer: updatedCurrentPlayer,
           players: updatedPlayers,
-          previousPlayer: updatedCurrentPlayer
+          // previousPlayer: updatedCurrentPlayer
         });
       };  
 
@@ -171,6 +187,11 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
    * Updates the next players turr, so the game continues
    */
   const updateNextPlayer = async () => {  
+    setDice1("");
+    setDice2("");
+    setInputDice1("");
+    setInputDice2("");
+
     try {
       const updateTransaction = async (transaction) => {
         const docSnapshot = await transaction.get(documentRef);
@@ -190,7 +211,10 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           currentPlayer = game.players[(previousPlayerIndex + 1)];
         }
 
-        transaction.update(documentRef, { currentPlayer: currentPlayer });
+        transaction.update(documentRef, {
+          currentPlayer: currentPlayer,
+          previousPlayer: game.players[previousPlayerIndex],
+        });
       };
 
       console.log("Updated next player");
@@ -235,79 +259,77 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       players: updatedPlayers,
       previousPlayer: updatedPreviousPlayer
     });
+
+    setDice1("");
+    setDice2("");
+    setInputDice1("");
+    setInputDice2("");
   };
 
   /**
    * Checks if the current player beat or tied the score to the previous player
    */
-  const hasScoreImproved = () => {
-    // Gets previuous player score
-    // Gets current player score
-    console.log(game);
+  const hasScoreImproved = async () => {
+    const gameData = await fetchGameData();
 
-    const previousPlayerScore = game.previousPlayer.inputDice1 + " " + game.previousPlayer.inputDice2;
-    const currentPlayerScore = playersTurn.inputDice1 + " " + playersTurn.inputDice2;
+    const previousPlayerIntegerScore = diceValueToIndex(gameData.previousPlayer.inputDice1, game.previousPlayer.inputDice2);
+    const currentPlayerIntegerScore = diceValueToIndex(gameData.currentPlayer.inputDice1, game.currentPlayer.inputDice2);
 
-    console.log("Prev Player Score: " + previousPlayerScore + `P: ${game.previousPlayer.username}`);
-    console.log("Curr Player Score: " + currentPlayerScore + `P: ${game.currentPlayer.username}`);
-
-    // Calculate their indeger values
-    // const previousPlayerIntegerScore = diceValueToIndex();
-    // const currentPlayerIntegerScore = diceValueToIndex();
-
-    // Compare
-    // Print out a statement if user succeeds or losses
-    // If loss, resetGame and nextPlayer
-
+    if(previousPlayerIntegerScore[0] > currentPlayerIntegerScore[0]) {
+      return false;
+    }
+    return true;
   };
 
   const diceValueToIndex = (dice1, dice2) => {
     const dices = dice1 > dice2 ? dice1 + dice2 : dice2 + dice1;
-    switch(dices) {
-      case dices === "21":
-        return ["20", "MEYER"];
-      case dices === "31":
-        return ["19", "SMALL MEYER"];
+    switch (dices) {
+        case "21":
+            return [20, "MEYER"];
+        case "31":
+            return [19, "SMALL MEYER"];
 
-      case dices === "66":
-        return ["18", "PAIR"];
-      case dices === "55":
-        return ["17", "PAIR"];  
-      case dices === "44":
-        return ["16", "PAIR"];
-      case dices === "33":
-        return ["15", "PAIR"];
-      case dices === "22":
-        return ["14", "PAIR"];
-      case dices === "11":
-        return ["13", "PAIR"];
+        case "66":
+            return [18, "PAIR"];
+        case "55":
+            return [17, "PAIR"];
+        case "44":
+            return [16, "PAIR"];
+        case "33":
+            return [15, "PAIR"];
+        case "22":
+            return [14, "PAIR"];
+        case "11":
+            return [13, "PAIR"];
 
-      case dices === "65":
-        return ["12", "VALUE"];
-      case dices === "64":
-        return ["11", "VALUE"];
-      case dices === "63":
-        return ["10", "VALUE"];
-      case dices === "62":
-        return ["9", "VALUE"];
-      case dices === "61":
-        return ["8", "VALUE"];  
-      case dices === "54":
-        return ["7", "VALUE"];
-      case dices === "53":
-        return ["6", "VALUE"];
-      case dices === "52":
-        return ["5", "VALUE"];
-      case dices === "51":
-        return ["4", "VALUE"];
-      case dices === "43":
-        return ["3", "VALUE"];
-      case dices === "42":
-        return ["2", "VALUE"];
-      case dices === "41":
-        return ["1", "VALUE"];
-      case dices === "32":
-        return ["0", "VALUE"];
+        case "65":
+            return [12, "VALUE"];
+        case "64":
+            return [11, "VALUE"];
+        case "63":
+            return [10, "VALUE"];
+        case "62":
+            return [9, "VALUE"];
+        case "61":
+            return [8, "VALUE"];
+        case "54":
+            return [7, "VALUE"];
+        case "53":
+            return [6, "VALUE"];
+        case "52":
+            return [5, "VALUE"];
+        case "51":
+            return [4, "VALUE"];
+        case "43":
+            return [3, "VALUE"];
+        case "42":
+            return [2, "VALUE"];
+        case "41":
+            return [1, "VALUE"];
+        case "32":
+            return [0, "VALUE"];
+        default:
+            return [0, "UNKNOWN"];
     }
   };
 
@@ -352,6 +374,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           className="p-1 m-1 bg-gray-200 w-12"
           onChange={e => setInputDice1(e.target.value)}
           placeholder='Dice 1'
+          value={inputDice1}
           min={1} max={6}
         />
         <input 
@@ -359,6 +382,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           className="p-1 m-1 bg-gray-200 w-12"
           placeholder='Dice 2'
           onChange={e => setInputDice2(e.target.value)}
+          value={inputDice2}
           min={1} max={6}
         />
         <button
@@ -372,10 +396,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           onClick={updateNextPlayer}
         >
           nextPlayer
-        </button>
-
-        <button onClick={() => console.log(game)}>
-          gamePrint
         </button>
       </div>
     );
