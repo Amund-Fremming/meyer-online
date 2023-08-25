@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { runTransaction, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { handleLeaveGame } from '../../util/databaseFunctions';
+import Header from '../Universal/Header';
 
 /**
  * Handles all the users choices when its their turn
@@ -403,7 +404,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
         </button>
       </div>
     );
-  };
+  }
 };
 
 export default PlayerTurn
