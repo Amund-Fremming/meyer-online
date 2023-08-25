@@ -5,7 +5,6 @@ import WaitingTurn from "../components/Game/WaitingTurn";
 import GameBoard from "../components/Game/GameBoard"; 
 import { handleLeaveGame } from "../util/databaseFunctions";
 import Header from "../components/Universal/Header";
-import PlayersDecition from "../components/Game/PlayersDecition";
 
 /**
  * The main game component, where the game is played

@@ -11,12 +11,26 @@ import Dice from './Dice';
  */
 const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
 
+  const savePlayerturnSession = () => {
+    // save thrownDices
+    // save tryBust
+    // save bustSuccess
+    // save diceComponent1
+    // save DiceComponent2
+    // save playedDices
+    // save diceScoreMessage
+    // save diceScoreColor
+  };
+
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
   const [game, setGame] = useState({});
+  const [playedDices, setPlayedDices] = useState(false);
   const [diceComponent1, setDiceComponent1] = useState();
   const [diceComponent2, setDiceComponent2] = useState();
+  const [diceScoreMessage, setDiceScoreMessage] = useState("");
+  const [diceScoreColor, setDiceScoreColor] = useState("");
 
   useEffect(() => {
     if(!documentRef) return;
@@ -78,7 +92,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       setBustSuccess(false);
     } 
      
-    resetGame();
+    // resetGame();
   };
 
   /** 
@@ -89,8 +103,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const dice1Local = Math.floor(Math.random() * 6) + 1;
     const dice2Local = Math.floor(Math.random() * 6) + 1;
 
-    setDiceComponent1(<Dice /*val={dice1Local}*/ val={5}/>);
-    setDiceComponent2(<Dice /* val={dice2Local}*/ val={6}/>);
+    setDiceComponent1(<Dice val={dice1Local} />);
+    setDiceComponent2(<Dice val={dice2Local}/>);
 
     if(timeoutPlayer) {
      setInputDice1(dice1Local);
@@ -130,13 +144,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const hasImproved = await hasScoreImproved(gameData);
 
     if(hasImproved) {
-      alert("Your score is good!");
-      await updateNextPlayer();  
+      setDiceScoreMessage("Your score passed!");
+      setDiceScoreColor("green-400");
     } else {
-      // If loss, alert player, make him hit ok, then update next player
-      alert("Your score is too low, you loose");
-      resetGame();
+      setDiceScoreMessage("Score too low, you lost!");
+      setDiceScoreColor("red-400");
+      //resetGame();
     }
+    setPlayedDices(true);
   };
 
   /**
@@ -276,7 +291,15 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     setDice2("");
     setInputDice1("");
     setInputDice2("");
+
     setThrownDices(false);
+    setTryBust(false);
+    setBustSuccess(false);
+    setPlayedDices(false);
+    setDiceComponent1({});
+    setDiceComponent2({});
+    setDiceScoreColor("");
+    setDiceScoreMessage("");
   };
 
   /**
@@ -366,11 +389,11 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     );
   } else if(!thrownDices && tryBust) { // Player tried to bust
     return(
-      <PlayersDecition message={bustSuccess ? `You busted ${previousPlayer.username}` : "Your bust failed"} color={bustSuccess ? "green-400" : "red-400"}>
+      <PlayersDecition message={bustSuccess ? `You busted ${game.previousPlayer.username}` : "Your bust failed"} color={bustSuccess ? "green-400" : "red-400"}>
         <NavButton text="Throw dices" onClickFunction={() => handleThrowDices(false)} />
       </PlayersDecition>
     );
-  } else if(thrownDices) { // Player have trown dices
+  } else if(thrownDices && !playedDices) { // Player have trown dices
     return(
       <>
         <div className='flex'>
@@ -378,41 +401,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           {diceComponent2}
         </div>
         <PlayersDecition message="Lie or play your two dices" color="green-400">
-          <NavButton text="Play dices" />
-        </PlayersDecition>
-      </>
-    );
-  }
-
-  else if(!thrownDices) {
-    return (
-      <div className='flex flex-col justify-center items-center'>
-
-        { tryBust ? <p>The bust was {bustSuccess ? "true" : "false"}</p> : <></> }
-
-        <div>
-          <button
-            className='m-2 p-1 bg-gray-200'
-            onClick={handleBust}
-          >
-            Bust
-          </button>
-          <button
-            className='m-2 p-1 bg-gray-200'
-            onClick={() => handleThrowDices(false)}
-          >
-            Throw dice
-          </button>
-        </div>
-      </div>
-    )
-  } else if(thrownDices) {
-    return(
-      <div className='flex flex-col justify-center items-center'>
-        {/* Dices */} /*
-        <p>Dice1: {dice1}</p>
-        <p>Dice2: {dice2}</p>
-        <input 
+          <NavButton text="Play dices" onClickFunction={handleSubmitDices}/>
+          <input 
           type="number"
           className="p-1 m-1 bg-gray-200 w-12"
           onChange={e => setInputDice1(e.target.value)}
@@ -428,19 +418,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           value={inputDice2}
           min={1} max={6}
         />
-        <button
-          className='m-2 p-1 bg-gray-200'
-          onClick={handleSubmitDices}
-        >
-          Play dices
-        </button>
-        <button
-          className='m-2 p-1 bg-gray-200'
-          onClick={updateNextPlayer}
-        >
-          nextPlayer
-        </button>
-      </div>
+        </PlayersDecition>
+      </>
+    );
+  } else if(thrownDices && playedDices) {
+    return(
+      <PlayersDecition message={diceScoreMessage} color={diceScoreColor}>
+        <NavButton text="Next player" onClickFunction={updateNextPlayer} />
+      </PlayersDecition>
     );
   }
 };

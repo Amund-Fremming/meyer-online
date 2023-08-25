@@ -4,13 +4,13 @@
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
 ### Neste
+- Ikke muylig å trykk ebust om forrige spiller har verdi 00, da synes ikk ebuyst knapp
 - Oppdatere gamestate i Playerturn så man ikke blir kastet til start i sin tur om man refresher siden
 
 - Sette timer til lavere verdi
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med spillers resultat??
 
 - Lage GameBoard komponent som viser spillere på bordet og hva de kastet sist tur
-- Lage PlayerDecition coponent som renderer spillers mulige handlinger
 - Lage Dices component som viser terningene som kan velges
 
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
