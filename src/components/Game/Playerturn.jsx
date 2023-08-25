@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { runTransaction, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { handleLeaveGame } from '../../util/databaseFunctions';
-import Header from '../Universal/Header';
+
+// MÅ lagre gamestate så man ikke kan slå terning på nytt på hver rerender
 
 /**
  * Handles all the users choices when its their turn
