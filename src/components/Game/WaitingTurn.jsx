@@ -1,25 +1,17 @@
 import React from 'react'
+import PlayersDecition from "./PlayersDecition";
 
 /**
  * Handles all the users waiting turn.
  */
-const WaitingTurn = () => {
+const WaitingTurn = ({ players }) => {
 
-  /**
-   * For players that are bored.
-   */
-  const pokePlayer = (username) => {
-    // OnSnapshot to players in database
-    // Update screen when poked is true
-    // Poking resets every 5 seconds or to a player removes the poke
-  };
+  // Players må oppdatere person som blir busted med rød skrift, og så fjerne denne med en timer
 
-  // 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        Waiting for your turn...
-      </div>
+      <PlayersDecition message="Waiting for your turn..." color="green-400" waiting={true} >
+      </PlayersDecition>
     </>
   )
 };

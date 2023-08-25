@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { runTransaction, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { handleLeaveGame } from '../../util/databaseFunctions';
+import PlayersDecition from './PlayersDecition';
+import NavButton from '../Universal/NavButton';
 
 // MÅ lagre gamestate så man ikke kan slå terning på nytt på hver rerender
 
@@ -348,6 +350,23 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   };
 
   if(!thrownDices) {
+    // Kunne kaste terninger, kunne buste
+    // Hvis kastet terninger vise bare terninger du kan velge og playDices, men den kan bare trykkes om man har valgt to terninger => kanskje en feilmelding her? og tekst øverst, velg to terninger
+    return(
+      <PlayersDecition message="Bust prevoius player or play dices!" color="green-400">
+        <NavButton text="Bust" />
+        <NavButton  text="Trow dices" />
+      </PlayersDecition>
+    );
+  } else if(thrownDices) {
+    return(
+      <PlayersDecition text="">
+        <NavButton  message="Trow dices" />
+      </PlayersDecition>
+    );
+  }
+
+  else if(!thrownDices) {
     return (
       <div className='flex flex-col justify-center items-center'>
 
@@ -372,7 +391,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   } else if(thrownDices) {
     return(
       <div className='flex flex-col justify-center items-center'>
-        {/* Dices */}
+        {/* Dices */} /*
         <p>Dice1: {dice1}</p>
         <p>Dice2: {dice2}</p>
         <input 

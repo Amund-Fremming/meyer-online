@@ -77,7 +77,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                     resetGameState={resetGameState}
                     setInactiveCounter={setInactiveCounter}
                 /> :
-                <WaitingTurn />
+                <WaitingTurn players={players} />
             }      
         </div>
     );
