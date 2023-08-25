@@ -4,6 +4,8 @@
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
 ### Neste
+- Oppdatere gamestate i Playerturn så man ikke blir kastet til start i sin tur om man refresher siden
+
 - Sette timer til lavere verdi
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med spillers resultat??
 

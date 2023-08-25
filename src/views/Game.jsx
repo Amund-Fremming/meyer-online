@@ -47,7 +47,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
 
     return(
         <div
-            className="min-h-screen bg-cover bg-center flex flex-col justify-evenly items-center h-screen w-full bg-gray-500" style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
+            className="min-h-screen bg-cover bg-center flex flex-col justify-start items-center h-screen w-full bg-gray-500" style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
         >
             <button
                 className='p-1 shadow-xl m-1 absolute top-8 left-2 h-8 w-12 text-center rounded-md bg-[#A999FE] font-oswald'

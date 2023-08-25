@@ -4,8 +4,7 @@ import { db } from '../../config/firebase';
 import { handleLeaveGame } from '../../util/databaseFunctions';
 import PlayersDecition from './PlayersDecition';
 import NavButton from '../Universal/NavButton';
-
-// MÅ lagre gamestate så man ikke kan slå terning på nytt på hver rerender
+import Dice from './Dice';
 
 /**
  * Handles all the users choices when its their turn
@@ -16,6 +15,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
   const [game, setGame] = useState({});
+  const [diceComponent1, setDiceComponent1] = useState();
+  const [diceComponent2, setDiceComponent2] = useState();
 
   useEffect(() => {
     if(!documentRef) return;
@@ -87,6 +88,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     // Play dice annimation
     const dice1Local = Math.floor(Math.random() * 6) + 1;
     const dice2Local = Math.floor(Math.random() * 6) + 1;
+
+    setDiceComponent1(<Dice /*val={dice1Local}*/ val={5}/>);
+    setDiceComponent2(<Dice /* val={dice2Local}*/ val={6}/>);
 
     if(timeoutPlayer) {
      setInputDice1(dice1Local);
@@ -349,20 +353,34 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     // Needs to edit db
   };
 
-  if(!thrownDices) {
-    // Kunne kaste terninger, kunne buste
+  if(!thrownDices && !tryBust) { // Initial load
+    // Her må man lagre gamestate slik at på frefrsh så blir man ikke satt tilbake til starten
+
+    // Lage flow for bust
     // Hvis kastet terninger vise bare terninger du kan velge og playDices, men den kan bare trykkes om man har valgt to terninger => kanskje en feilmelding her? og tekst øverst, velg to terninger
     return(
       <PlayersDecition message="Bust prevoius player or play dices!" color="green-400">
-        <NavButton text="Bust" />
-        <NavButton  text="Trow dices" />
+        <NavButton text="Bust" onClickFunction={handleBust} />
+        <NavButton  text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
       </PlayersDecition>
     );
-  } else if(thrownDices) {
+  } else if(!thrownDices && tryBust) { // Player tried to bust
     return(
-      <PlayersDecition text="">
-        <NavButton  message="Trow dices" />
+      <PlayersDecition message={bustSuccess ? `You busted ${previousPlayer.username}` : "Your bust failed"} color={bustSuccess ? "green-400" : "red-400"}>
+        <NavButton text="Throw dices" onClickFunction={() => handleThrowDices(false)} />
       </PlayersDecition>
+    );
+  } else if(thrownDices) { // Player have trown dices
+    return(
+      <>
+        <div className='flex'>
+          {diceComponent1}
+          {diceComponent2}
+        </div>
+        <PlayersDecition message="Lie or play your two dices" color="green-400">
+          <NavButton text="Play dices" />
+        </PlayersDecition>
+      </>
     );
   }
 
