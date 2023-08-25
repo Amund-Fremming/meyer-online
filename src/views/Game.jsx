@@ -44,73 +44,43 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
         return () => unsubscribe();
     }, [documentRef]);   
     
-    if(true) {
-        return(
-            <div
-                className="min-h-screen bg-cover bg-center flex flex-col justify-evenly items-center h-screen w-full bg-gray-500" style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
+
+    return(
+        <div
+            className="min-h-screen bg-cover bg-center flex flex-col justify-evenly items-center h-screen w-full bg-gray-500" style={{ backgroundImage: `url('${require("../img/lake.png")}')`}}
+        >
+            <button
+                className='p-1 shadow-xl m-1 absolute top-8 left-2 h-8 w-12 text-center rounded-md bg-[#A999FE] font-oswald'
+                onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
             >
-                <Header /> 
-                <GameBoard />
-                <PlayersDecition
-                    message="Game started"
-                    color="green-400"
-                />
-                
-            </div>
-        );
-    } else {
-        return(
-            <>
-                <div className="flex flex-col justify-center items-center h-screen">
-                    <h1>Game</h1>
-                    <h2>gameid: {gameid}</h2>
-                    <div className="m-2 p-1 bg-gray-200">
-                        <h1 className="text-xl font-bold">Players</h1>
-                        {
-                            players.map(player => (
-                                <p key={player.username}>{player.username} rolled dices: {player.inputDice1 > player.inputDice2 ? player.inputDice1 + "" + player.inputDice2 : player.inputDice2 + "" + player.inputDice1}</p>
-                            ))
-                        }
-                    </div>
-    
-                    <GameBoard
-                        players={players}
-                        playerInTurn={playerInTurn}
-                    />
-                    
-                    {/* Game logic */}
-                    {
-                        playersTurn
-                        ? <PlayerTurn 
-                            documentRef={documentRef}
-                            username={username}
-                            game={game}
-                            dice1={dice1}
-                            dice2={dice2}
-                            setDice1={setDice1}
-                            setDice2={setDice2}
-                            inputDice1={inputDice1}
-                            inputDice2={inputDice2}
-                            setInputDice1={setInputDice1}
-                            setInputDice2={setInputDice2}
-                            playersTurn={playersTurn}
-                            playerInTurn={playerInTurn}
-                            inactiveCounter={inactiveCounter}
-                            resetGameState={resetGameState}
-                            setInactiveCounter={setInactiveCounter}
-                        />
-                        : <WaitingTurn />
-                    }
-                    <button
-                        className='p-1 bg-gray-200 m-1'
-                        onClick={() => handleLeaveGame(username, documentRef, resetGameState)}
-                    >
-                        Leave
-                    </button>
-                </div>
-            </>
-        );
-    }
+                Leave
+            </button>
+            <Header /> 
+            <GameBoard />
+            {
+                playersTurn ?
+                <PlayerTurn
+                    documentRef={documentRef}
+                    username={username}
+                    game={game}
+                    dice1={dice1}
+                    dice2={dice2}
+                    setDice1={setDice1}
+                    setDice2={setDice2}
+                    inputDice1={inputDice1}
+                    inputDice2={inputDice2}
+                    setInputDice1={setInputDice1}
+                    setInputDice2={setInputDice2}
+                    playersTurn={playersTurn}
+                    playerInTurn={playerInTurn}
+                    inactiveCounter={inactiveCounter}
+                    resetGameState={resetGameState}
+                    setInactiveCounter={setInactiveCounter}
+                /> :
+                <WaitingTurn />
+            }      
+        </div>
+    );
 };
 
 export default Game;
