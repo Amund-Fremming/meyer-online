@@ -4,8 +4,6 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { collection, doc, addDoc, getDocs, query, where, runTransaction } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import Header from "../components/Universal/Header";
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 
 /**
  * Initial screen allowing users to either host or join a game.
