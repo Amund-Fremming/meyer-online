@@ -9,7 +9,7 @@ const Dice = ({ val }) => {
             return(
                 <div className="flex">
                     <div className="rounded-full bg-[#46474B] h-[8px] w-[8px] mb-[13px] mr-[4px]" />
-                    <div className="rounded-full bg-[#46474B] h-[8px] w-[8px] mt-[13px] ml-[4px]" />
+                    <div className="rounded-full bg-[#46474B] h-[8px] w-[8px] mt-[13px] ml-[4px]" /> 
                 </div>
             );
         } else if(val === 3) {
