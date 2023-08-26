@@ -19,7 +19,7 @@
 - beta testing med noen få brukere, så fikse feil
 
 <br/><br/>
-
+ 
 # Meyer
 
 ### Kort om appen
