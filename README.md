@@ -6,7 +6,9 @@
 
 ### Neste
 - Bust knappen skal ikke være synlig om spiller før hadde terninger 00
-- Oppdatere gamestate i Playerturn så man ikke blir kastet til start i sin tur om man refresher siden
+- lagre gamestate i Playerturn så samme state om refresh
+- Fikse timer for inaktive spillere
+
 - Fullføre spillere i GameBoard.jsx
 
 - Sette timer til lavere verdi

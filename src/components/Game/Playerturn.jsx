@@ -11,18 +11,6 @@ import Dice from './Dice';
  */
 const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
 
-  const savePlayerturnSession = () => {
-    // save thrownDices
-    // save tryBust
-    // save bustSuccess
-    // save diceComponent1
-    // save DiceComponent2
-    // save playedDices
-    // save diceScoreMessage
-    // save diceScoreColor
-    // game reset
-  };
-
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
   const [bustSuccess, setBustSuccess] = useState(false);
@@ -205,6 +193,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     } catch(err) {
       console.log("Error: " + err.message);
     }
+
     console.log("Player dices updated");
   };
 
@@ -302,6 +291,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       setDiceComponent1({});
       setDiceComponent2({});
     }
+
   };
 
   /**
