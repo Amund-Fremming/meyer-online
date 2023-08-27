@@ -20,6 +20,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     // save playedDices
     // save diceScoreMessage
     // save diceScoreColor
+    // game reset
   };
 
   const [thrownDices, setThrownDices] = useState(false);
@@ -52,29 +53,34 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   /**
    * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
    */
+
+  // ØDELAGT
+  /*
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
-      console.log(inactiveCounter);
-      if(inactiveCounter === 3) {
-        handleLeaveGame(username, documentRef, resetGameState);
-        updateNextPlayer();
+      if(inactiveCounter === 10) {
+        await handleLeaveGame(username, documentRef, resetGameState);
+        await updateNextPlayer();
+        return;
       }
 
-      const diceArray = handleThrowDices();
-      await updateAllDices(diceArray[0], diceArray[1], true);
+      const diceArray = handleThrowDices(true);
+      await handleSubmitDices(diceArray[0], diceArray[1], true);
       await updateNextPlayer();
       setInactiveCounter(prevInactiveCounter => prevInactiveCounter + 1);
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 300000);
+      timeout = setTimeout(handleTimeout, 6000);
     }
 
     return () => {
       clearTimeout(timeout);
     }
+    
   }, [playersTurn, dice1, dice2]);
+  /*
 
   /**
    * Handles the logic if a player thinks the previous player has cheated.
@@ -91,8 +97,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       console.log(`The BUST was false, player ${username} lost!`);
       setBustSuccess(false);
     } 
-     
-    // resetGame();
+    
+    resetGame(false);
   };
 
   /** 
@@ -137,8 +143,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   /**
    * This method updates the dices, then updates the next player
    */
-  const handleSubmitDices = async () => {
-    await updateAllDices("0", "0", false);
+  const handleSubmitDices = async (dice1param, dice2param, timedOutPlayer) => {
+    await updateAllDices(dice1param, dice2param, timedOutPlayer);
     const gameData = await fetchGameData();
 
     const hasImproved = await hasScoreImproved(gameData);
@@ -149,8 +155,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     } else {
       setDiceScoreMessage("Score too low, you lost!");
       setDiceScoreColor("red-400");
-      //resetGame();
+      resetGame(false);
     }
+
     setPlayedDices(true);
   };
 
@@ -197,7 +204,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
         transaction.update(documentRef, {
           currentPlayer: updatedCurrentPlayer,
           players: updatedPlayers,
-          // previousPlayer: updatedCurrentPlayer
         });
       };  
 
@@ -211,7 +217,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   /**
    * Updates the next players turr, so the game continues
    */
-  const updateNextPlayer = async () => {  
+  const updateNextPlayer = async () => {
     setDice1("");
     setDice2("");
     setInputDice1("");
@@ -226,16 +232,16 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           throw new Error("Document does not exist!");
         }
 
-        const previousPlayerIndex = game.players.findIndex(player => player.username === username);
+        const previousPlayerIndex = gameData.players.findIndex(player => player.username === username);
         let currentPlayer;
 
         if(previousPlayerIndex === -1) {
           alert("player no longer exists");
           return;
-        } else if(previousPlayerIndex === (game.players.length - 1)) {
-          currentPlayer = game.players[0];
+        } else if(previousPlayerIndex === (gameData.players.length - 1)) {
+          currentPlayer = gameData.players[0];
         } else {
-          currentPlayer = game.players[(previousPlayerIndex + 1)];
+          currentPlayer = gameData.players[(previousPlayerIndex + 1)];
         }
 
         transaction.update(documentRef, {
@@ -254,8 +260,10 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   /**
    * Resets the game so its ready for a new round
    */
-  const resetGame = async () => {
-    const updatedPlayers = game.players.map(player => {
+  const resetGame = async (fullReset) => {
+    const gameData = await fetchGameData();
+
+    const updatedPlayers = gameData.players.map(player => {
       return {
         ...player,
         dice1: 0,
@@ -287,19 +295,19 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       previousPlayer: updatedPreviousPlayer
     });
 
-    setDice1("");
-    setDice2("");
-    setInputDice1("");
-    setInputDice2("");
+    if(fullReset) {
+      setDice1("");
+      setDice2("");
+      setInputDice1("");
+      setInputDice2(""); 
 
-    setThrownDices(false);
-    setTryBust(false);
-    setBustSuccess(false);
-    setPlayedDices(false);
-    setDiceComponent1({});
-    setDiceComponent2({});
-    setDiceScoreColor("");
-    setDiceScoreMessage("");
+      setThrownDices(false);
+      setTryBust(false);
+      setBustSuccess(false);
+      setPlayedDices(false);
+      setDiceComponent1({});
+      setDiceComponent2({});
+    }
   };
 
   /**
@@ -378,13 +386,10 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
 
   if(!thrownDices && !tryBust) { // Initial load
     // Her må man lagre gamestate slik at på frefrsh så blir man ikke satt tilbake til starten
-
-    // Lage flow for bust
-    // Hvis kastet terninger vise bare terninger du kan velge og playDices, men den kan bare trykkes om man har valgt to terninger => kanskje en feilmelding her? og tekst øverst, velg to terninger
     return(
       <PlayersDecition message="Bust prevoius player or play dices!" color="green-400">
         <NavButton text="Bust" onClickFunction={handleBust} />
-        <NavButton  text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
+        <NavButton text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
       </PlayersDecition>
     );
   } else if(!thrownDices && tryBust) { // Player tried to bust
@@ -401,7 +406,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           {diceComponent2}
         </div>
         <PlayersDecition message="Lie or play your two dices" color="green-400">
-          <NavButton text="Play dices" onClickFunction={handleSubmitDices}/>
+          <NavButton text="Play dices" onClickFunction={() => handleSubmitDices("0", "0", false)}/>
           <input 
           type="number"
           className="p-1 m-1 bg-gray-200 w-12"
@@ -424,7 +429,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   } else if(thrownDices && playedDices) {
     return(
       <PlayersDecition message={diceScoreMessage} color={diceScoreColor}>
-        <NavButton text="Next player" onClickFunction={updateNextPlayer} />
+        <NavButton text="Next player" onClickFunction={async() => {
+          await updateNextPlayer(true); 
+      }}/>
       </PlayersDecition>
     );
   }
