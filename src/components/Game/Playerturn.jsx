@@ -382,7 +382,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     // Her må man lagre gamestate slik at på frefrsh så blir man ikke satt tilbake til starten
     return(
       <PlayersDecition message="Bust prevoius player or play dices!" color="green-400">
-        <NavButton text="Bust" onClickFunction={handleBust} />
+        <NavButton text="Bust" onClickFunction={async() => await handleBust()} />
         <NavButton text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
       </PlayersDecition>
     );
@@ -400,7 +400,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           {diceComponent2}
         </div>
         <PlayersDecition message="Lie or play your two dices" color="green-400">
-          <NavButton text="Play dices" onClickFunction={() => handleSubmitDices("0", "0", false)}/>
+          <NavButton text="Play dices" onClickFunction={async() => await handleSubmitDices("0", "0", false)}/>
           <input 
           type="number"
           className="p-1 m-1 bg-gray-200 w-12"
