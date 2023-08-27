@@ -50,10 +50,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     return () => unsubscribe();
   }, [documentRef]);
 
-  /**
-   * This method will skip a player if he uses too long time. In order to update the game when a player is inactive handleThrowDices needs to have a callback to pass values to updateAllDices since the useEffect method is to slow for this update, resulting in the db not getting updated correct.
-   */
-
   // ØDELAGT
   /*
   useEffect(() => {
@@ -92,7 +88,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     if(gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"") {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
-      alertPlayerBusted();
     } else {
       console.log(`The BUST was false, player ${username} lost!`);
       setBustSuccess(false);
@@ -105,7 +100,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
    * Handles the throw dice mechanism
    */
   const handleThrowDices = (timeoutPlayer) => {
-    // Play dice annimation
     const dice1Local = Math.floor(Math.random() * 6) + 1;
     const dice2Local = Math.floor(Math.random() * 6) + 1;
 
