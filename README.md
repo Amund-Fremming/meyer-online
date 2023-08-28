@@ -14,6 +14,13 @@
 - lagre gamestate i Playerturn så samme state om refresh
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
 
+
+- for å fikse at det ikke er forskjell på terninger, sjekk d1 mot id1 og d2 mot id2 eller at d1 er id2 og d2 er id1
+- Når det er username sin tur bytt navnet i gameBoard til en farge så alle ser hvem som spiller, eller er den standard
+- Legge til result i players database entry, er det busted må navnet deres vises rødt med busted over kasnkje, og hvis de taper en runde må det vises rødt med loss over
+- Må legge inn maks spillere til 6, og ha predefinerte plasser rundt bordet ut ifra hvor mange som spiller så det ser pent ut.
+
+
 <br/><br/>
  
 # Meyer
