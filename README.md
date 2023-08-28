@@ -11,7 +11,6 @@
 
 - Fullføre spillere i GameBoard.jsx
 
-- Sette timer til lavere verdi
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med spillers resultat??
 
 - Lage Dices component som viser terningene som kan velges
