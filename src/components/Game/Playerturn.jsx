@@ -73,7 +73,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const gameData = await fetchGameData();
     setTryBust(true);
 
-    if(gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"") {
+    if((gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"")) {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
     } else {
@@ -391,6 +391,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
         </div>
         <PlayersDecition message="Lie or play your two dices" color="green-400">
           <NavButton text="Play dices" onClickFunction={async() => await handleSubmitDices("0", "0", false)}/>
+
+          <div className='flex'>
+          </div>
           <input 
           type="number"
           className="p-1 m-1 bg-gray-200 w-12"
@@ -407,6 +410,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
           value={inputDice2}
           min={1} max={6}
         />
+
+
         </PlayersDecition>
       </>
     );

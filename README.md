@@ -5,16 +5,16 @@
 
 
 ### Neste
+- Lage Dices component som viser terningene som kan velges
+- Fikse så det ikke har noe å si hvilken rekkefølge man skriver inn inputDices i så man ikke blir busted for feil rekkefølge.
 - Bust knappen skal ikke være synlig om spiller før hadde terninger 00
 - lagre gamestate i Playerturn så samme state om refresh
-- Fikse timer for inaktive spillere
+- Fikse timer for inaktive spillere, bare fjern spiller om han er inaktiv i 30 sek, ikke skipping
 
 - Fullføre spillere i GameBoard.jsx
 
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med spillers resultat??
 
-- Lage Dices component som viser terningene som kan velges
-- Fikse så det ikke har noe å si hvilken rekkefølge man skriver inn inputDices i så man ikke blir busted for feil rekkefølge.
 
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
 - beta testing med noen få brukere, så fikse feil
