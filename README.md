@@ -2,6 +2,7 @@
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
+- Rydde CSS og kode i PlayerGame og playerDecition??
 
 
 ### Neste
@@ -17,7 +18,7 @@
 
 
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
-- beta testing med noen få brukere, så fikse feil
+- beta testing med noen få brukere, så fikse feil 
 
 <br/><br/>
  
