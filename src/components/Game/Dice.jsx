@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dice = ({ val, color1, color2, toggle }) => {
+const Dice = ({ val, toggle }) => {
 
     const makeDots = () => {
         if(val === 1) {

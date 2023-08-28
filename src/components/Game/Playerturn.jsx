@@ -10,7 +10,7 @@ import ChooseDices from './ChooseDices';
 /**
  * Handles all the users choices when its their turn
  */
-const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, inactiveCounter, setInactiveCounter }) => {
+const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState }) => {
 
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
@@ -39,25 +39,16 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     return () => unsubscribe();
   }, [documentRef]);
 
-  // ØDELAGT
-  /*
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
-      if(inactiveCounter === 10) {
-        await handleLeaveGame(username, documentRef, resetGameState);
-        await updateNextPlayer();
-        return;
-      }
-
-      const diceArray = handleThrowDices(true);
-      await handleSubmitDices(diceArray[0], diceArray[1], true);
+      await handleLeaveGame(username, documentRef, resetGameState);
       await updateNextPlayer();
-      setInactiveCounter(prevInactiveCounter => prevInactiveCounter + 1);
+      alert("Inactive for too long");
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 6000);
+      timeout = setTimeout(handleTimeout, 20000);
     }
 
     return () => {
@@ -361,14 +352,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     }
   };
 
-  /**
-   * Alerts the player that has been busted.
-   */
-  const alertPlayerBusted = () => {
-    // Updates a players busted state, and shows them that they are busted and to all other players
-    // Needs to edit db
-  };
-
   if(!thrownDices && !tryBust) { // Initial load
     // Her må man lagre gamestate slik at på frefrsh så blir man ikke satt tilbake til starten
     return(
@@ -394,7 +377,10 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
             {diceComponent2}
           </div>
           <h2 className='text-xl font-oswald m-2 text-green-400'>Choose:</h2>
-          <ChooseDices />
+          <ChooseDices 
+            setInputDice1={setInputDice1}
+            setInputDice2={setInputDice2}
+          />
           <div className='mb-2' />
           <NavButton text="Play dices" onClickFunction={async() => await handleSubmitDices("0", "0", false)}/>
           </PlayersDecition>

@@ -1,8 +1,6 @@
 import React from 'react';
 import ChooseDices from './ChooseDices';
 
-// Må legge til leave knapp øverst til venstre
-// Lagre game state tilfelle rerender
 
 /**
  * Component for players decitions in the game
