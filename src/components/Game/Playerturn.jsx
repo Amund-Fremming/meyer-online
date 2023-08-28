@@ -92,8 +92,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const dice1Local = Math.floor(Math.random() * 6) + 1;
     const dice2Local = Math.floor(Math.random() * 6) + 1;
 
-    setDiceComponent1(<Dice val={dice1Local} />);
-    setDiceComponent2(<Dice val={dice2Local}/>);
+    setDiceComponent1(<Dice val={dice1Local} toggle={true} />);
+    setDiceComponent2(<Dice val={dice2Local} toggle={true} />);
 
     if(timeoutPlayer) {
      setInputDice1(dice1Local);
@@ -373,8 +373,10 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     // Her må man lagre gamestate slik at på frefrsh så blir man ikke satt tilbake til starten
     return(
       <PlayersDecition message="Bust prevoius player or play dices!" color="green-400">
-        <NavButton text="Bust" onClickFunction={async() => await handleBust()} />
-        <NavButton text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
+        <div className='flex'>
+          <NavButton text="Bust" onClickFunction={async() => await handleBust()} />
+          <NavButton text="Trow dices" onClickFunction={() => handleThrowDices(false)} />
+        </div>
       </PlayersDecition>
     );
   } else if(!thrownDices && tryBust) { // Player tried to bust
@@ -386,12 +388,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   } else if(thrownDices && !playedDices) { // Player have trown dices
     return(
       <>
-        <h2 className='font-oswald text-2xl text-green-400 mt-[25%] mb-2'>Dices:</h2>
-        <div className='flex'>
-          {diceComponent1}
-          {diceComponent2}
-        </div>
         <PlayersDecition message="Lie or play your two dices" color="green-400" playersTurn={true}>
+          <div className='flex'>
+            {diceComponent1}
+            {diceComponent2}
+          </div>
+          <h2 className='text-xl font-oswald m-2 text-green-400'>Choose:</h2>
+          <ChooseDices />
+          <div className='mb-2' />
           <NavButton text="Play dices" onClickFunction={async() => await handleSubmitDices("0", "0", false)}/>
           </PlayersDecition>
       </>

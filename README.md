@@ -2,12 +2,12 @@
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
-- Rydde CSS og kode i PlayerGame og playerDecition??
 
 
 ### Neste
-- Lage Dices component som viser terningene som kan velges
+- Fullføre ChooseDice component så den funker
 - Fikse så det ikke har noe å si hvilken rekkefølge man skriver inn inputDices i så man ikke blir busted for feil rekkefølge.
+
 - Bust knappen skal ikke være synlig om spiller før hadde terninger 00
 - lagre gamestate i Playerturn så samme state om refresh
 - Fikse timer for inaktive spillere, bare fjern spiller om han er inaktiv i 30 sek, ikke skipping

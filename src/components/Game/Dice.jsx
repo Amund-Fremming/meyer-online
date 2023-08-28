@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dice = ({ val, color1, color2 }) => {
+const Dice = ({ val, color1, color2, toggle }) => {
 
     const makeDots = () => {
         if(val === 1) {
@@ -68,8 +68,8 @@ const Dice = ({ val, color1, color2 }) => {
     };
 
     return(
-        <div className="h-[50px] w-[50px] rounded-md bg-[#C0534C] m-1 shadow-gray-900 flex justify-center items-center shadow-xl">
-            <div className="h-[40px] w-[40px] rounded-md bg-[#F3726D] flex justify-center items-center">
+        <div className={`h-[50px] w-[50px] rounded-md ${toggle ? "bg-purple-400" : "bg-[#C0534C]"} m-1 shadow-gray-900 flex justify-center items-center shadow-xl`}>
+            <div className={`h-[40px] w-[40px] rounded-md ${toggle ? "bg-[#A999FE]" : "bg-[#F3726D]"} flex justify-center items-center`}>
                 {makeDots()}
             </div>
         </div>
