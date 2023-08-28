@@ -5,6 +5,7 @@ import { handleLeaveGame } from '../../util/databaseFunctions';
 import PlayersDecition from './PlayersDecition';
 import NavButton from '../Universal/NavButton';
 import Dice from './Dice';
+import ChooseDices from './ChooseDices';
 
 /**
  * Handles all the users choices when its their turn
@@ -385,34 +386,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   } else if(thrownDices && !playedDices) { // Player have trown dices
     return(
       <>
+        <h2 className='font-oswald text-2xl text-green-400 mt-[25%] mb-2'>Dices:</h2>
         <div className='flex'>
           {diceComponent1}
           {diceComponent2}
         </div>
-        <PlayersDecition message="Lie or play your two dices" color="green-400">
+        <PlayersDecition message="Lie or play your two dices" color="green-400" playersTurn={true}>
           <NavButton text="Play dices" onClickFunction={async() => await handleSubmitDices("0", "0", false)}/>
-
-          <div className='flex'>
-          </div>
-          <input 
-          type="number"
-          className="p-1 m-1 bg-gray-200 w-12"
-          onChange={e => setInputDice1(e.target.value)}
-          placeholder='Dice 1'
-          value={inputDice1}
-          min={1} max={6}
-        />
-        <input 
-          type="number"
-          className="p-1 m-1 bg-gray-200 w-12"
-          placeholder='Dice 2'
-          onChange={e => setInputDice2(e.target.value)}
-          value={inputDice2}
-          min={1} max={6}
-        />
-
-
-        </PlayersDecition>
+          </PlayersDecition>
       </>
     );
   } else if(thrownDices && playedDices) {
