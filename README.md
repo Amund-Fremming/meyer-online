@@ -1,4 +1,4 @@
-![Alt](src/img/quote.png)
+<img src="src/img/quote.png" alt="Alt" width="200">
 
 ### Må ordnes
 - (bildeopplastning ved username)???
