@@ -5,17 +5,11 @@
 
 
 ### Neste
-- Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med "Busted" og en timer som resetter denne etter noen sekunder
+- Ha en h1 som vises i game til alle om en spiller prøver å buste og resultat, eller om en spiller fikk for lav score, må fjernes etter kort tid
+
 
 - lagre gamestate i Playerturn så samme state om refresh
 - (Regne ut antall slurker, ut ifra hvor feil man busta?)
-
-
-
-- Når det er username sin tur bytt navnet i gameBoard til en farge så alle ser hvem som spiller, eller er den standard
-- Legge til result i players database entry, er det busted må navnet deres vises rødt med busted over kasnkje, og hvis de taper en runde må det vises rødt med loss over
-- Må legge inn maks spillere til 6, og ha predefinerte plasser rundt bordet ut ifra hvor mange som spiller så det ser pent ut.
-
 
 <br/><br/>
  
@@ -36,7 +30,7 @@
 
 ### Hva skal jeg gjøre annerledes neste gang
 - Lage de fleste kallene til databasen først og så sende referansen videre til andre komponenter, kontra å hente ut referansen i hvert komponent. Blir mer effektivt program.
-- Bli bedre på å skrive kommentarer og dokumentasjon.
+- Bli bedre på å skrive kommentarer og dokumentasjon, samt dele opp store componenter til mindre.
 - Ha kundemøter for å gjøre appen mer brukervennlig.
 - Designe appens flow før man starter å lage, enklere å dele opp komponenter å se hva man faktisk trenger.
 

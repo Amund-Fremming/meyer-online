@@ -72,9 +72,15 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     if(dicesValid || dicesValidCross) {
       console.log(`The BUST was false, player ${username} lost!`);
       setBustSuccess(false);
+
+      // VISE ALERT TIL ALLE I GAME AT EN PRØVDE Å BUSTE DEM
+      // PLAYER TRIED TO BUST ___, FAILED
     } else {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
+
+      // PLAYER TRIED TO BUST ___, SUCCEED
+      // SET PREVIOUSPLAYER.STATUS = BUSTED
     } 
     
     resetGame(false);
@@ -130,10 +136,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     if(hasImproved) {
       setDiceScoreMessage("Your score passed!");
       setDiceScoreColor("green-400");
+
+      // SET PLAYER.STATUS = "PASSED"
     } else {
       setDiceScoreMessage("Score too low, you lost!");
       setDiceScoreColor("red-400");
       resetGame(false);
+
+      // SET PLAYER.STATUS = "LOSS"
     }
 
     setPlayedDices(true);
