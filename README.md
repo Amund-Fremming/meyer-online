@@ -1,4 +1,6 @@
 
+![alt text](http://url/to/img.png)
+
 ### Må ordnes
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
