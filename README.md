@@ -7,6 +7,7 @@
 
 
 ### Neste
+- Når spiller leaver game så blir ikke currenPlayer oppdatert riktig
 - Ha en h1 som vises i game til alle om en spiller prøver å buste og resultat, eller om en spiller fikk for lav score, må fjernes etter kort tid
 
 
