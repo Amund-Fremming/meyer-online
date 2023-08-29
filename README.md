@@ -1,3 +1,4 @@
+
 ### Må ordnes
 - (bildeopplastning ved username)???
 - (Finn måte å avslutte spillet)
