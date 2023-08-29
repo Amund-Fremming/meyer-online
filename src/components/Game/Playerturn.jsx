@@ -48,7 +48,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 20000);
+      timeout = setTimeout(handleTimeout, 300000);
     }
 
     return () => {
@@ -65,7 +65,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const gameData = await fetchGameData();
     setTryBust(true);
 
-    if((gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"")) {
+    if((gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"") || (gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice2+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice1+"")) {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
     } else {
