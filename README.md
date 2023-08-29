@@ -5,7 +5,6 @@
 
 
 ### Neste
-- Fullføre spillere i GameBoard.jsx
 - Varsle spillere hvem som ble busted eller tapte, spesielt spilleren før må få stor varsling => Ny atributt i databasen med "Busted" og en timer som resetter denne etter noen sekunder
 
 - lagre gamestate i Playerturn så samme state om refresh

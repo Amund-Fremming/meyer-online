@@ -114,6 +114,11 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                     if(docSnapshot.data().state === "IN_PROGRESS") {
                         return "GAME_STARTED";
                     };
+
+                    // Checks if the game is full
+                    if(docSnapshot.data().players.length >= 6) {
+                        return "GAME_FULL";
+                    }
     
                     // Chekcs if the username exists
                     const players = docSnapshot.data().players;
@@ -141,6 +146,10 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                 }
                 if(transactionResult === "GAME_STARTED") {
                     setAlertUser("Game has started!");
+                    return;
+                }
+                if(transactionResult === "GAME_FULL") {
+                    setAlertUser("Game is full!");
                     return;
                 }
                 

@@ -42,8 +42,8 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
-      await handleLeaveGame(username, documentRef, resetGameState);
       await updateNextPlayer();
+      await handleLeaveGame(username, documentRef, resetGameState);
       alert("Inactive for too long");
     };
 
