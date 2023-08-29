@@ -54,7 +54,10 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                 Leave
             </button>
             <Header /> 
-            <GameBoard />
+            <GameBoard
+                players={players}
+                playerInTurn={playerInTurn}
+            />
             {
                 playersTurn ?
                 <PlayerTurn
