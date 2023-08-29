@@ -65,12 +65,16 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     const gameData = await fetchGameData();
     setTryBust(true);
 
-    if((gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice1+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice2+"") || (gameData.previousPlayer.inputDice1+"" !== gameData.previousPlayer.dice2+"" || gameData.previousPlayer.inputDice2+"" !== gameData.previousPlayer.dice1+"")) {
-      console.log("Previous player got BUSTED!");
-      setBustSuccess(true);
-    } else {
+    const dicesValid = (gameData.previousPlayer.inputDice1+"" === gameData.previousPlayer.dice1+"" && gameData.previousPlayer.inputDice2+"" === gameData.previousPlayer.dice2+"");
+
+    const dicesValidCross = (gameData.previousPlayer.inputDice1+"" === gameData.previousPlayer.dice2+"" && gameData.previousPlayer.inputDice2+"" === gameData.previousPlayer.dice1+"");
+
+    if(dicesValid || dicesValidCross) {
       console.log(`The BUST was false, player ${username} lost!`);
       setBustSuccess(false);
+    } else {
+      console.log("Previous player got BUSTED!");
+      setBustSuccess(true);
     } 
     
     resetGame(false);
