@@ -1,5 +1,4 @@
-
-![alt text](http://url/to/img.png)
+![Alt](/Users/AmundFremming/Desktop/quote.png)
 
 ### Må ordnes
 - (bildeopplastning ved username)???
