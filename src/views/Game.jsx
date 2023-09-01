@@ -5,6 +5,7 @@ import WaitingTurn from "../components/Game/WaitingTurn";
 import GameBoard from "../components/Game/GameBoard"; 
 import { handleLeaveGame } from "../util/databaseFunctions";
 import Header from "../components/Universal/Header";
+import { db } from "../config/firebase";
 
 /**
  * The main game component, where the game is played
@@ -57,8 +58,9 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
 
                 transaction.update(documentRef, { gamemessage: message });
 
-                await runTransaction(db, updateGameMessageTransaction);
             };
+
+            await runTransaction(db, updateGameMessageTransaction);
         } catch (err) {
             console.log("Error: " + err.message);
         }

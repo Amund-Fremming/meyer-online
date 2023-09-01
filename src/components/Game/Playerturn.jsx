@@ -72,15 +72,11 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     if(dicesValid || dicesValidCross) {
       console.log(`The BUST was false, player ${username} lost!`);
       setBustSuccess(false);
-
-      // VISE ALERT TIL ALLE I GAME AT EN PRØVDE Å BUSTE DEM
-      // PLAYER TRIED TO BUST ___, FAILED
+      await updateGameMessage(`${username} tried to bust ${game.previousPlayer.username}, but FAILED!`)
     } else {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
-
-      // PLAYER TRIED TO BUST ___, SUCCEED
-      // SET PREVIOUSPLAYER.STATUS = BUSTED
+      await updateGameMessage(`${username} tried to bust ${game.previousPlayer.username}, SUCCEED!`)
     } 
     
     resetGame(false);
@@ -140,6 +136,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
       // SET PLAYER.STATUS = "PASSED"
     } else {
       setDiceScoreMessage("Score too low, you lost!");
+      await updateGameMessage(`${username} lost the round!`);
       setDiceScoreColor("red-400");
       resetGame(false);
 
@@ -212,6 +209,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     setInputDice1("");
     setInputDice2("");
 
+    await updateGameMessage("");
     const gameData = await fetchGameData();
 
     try {
