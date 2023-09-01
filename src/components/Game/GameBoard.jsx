@@ -6,9 +6,17 @@ import dices from "../../img/dices.png";
  */
 const GameBoard = ({ players, playerInTurn  }) => {
 
-  const splitIndex = players.length / 2;
-  const playersTop = players.slice(0, splitIndex);
-  const playersBottom = players.slice(splitIndex);
+  let playersTop;
+  let playersBottom;
+  if(players.length === 2) {
+    playersTop = players;
+    playersBottom = [];
+  } else {
+    const splitIndex = players.length / 2;  
+    playersTop = players.slice(0, splitIndex);
+    playersBottom = players.slice(splitIndex);
+  }
+
 
   return (
     <div className='mt-64 font-oswald text-xl'>

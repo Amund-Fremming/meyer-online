@@ -52,7 +52,7 @@ const Home = ({ resetGameState , gameid, setGameid, username, setUsername, setVi
                         inputDice2: "0",
                     },
                 ],
-                roundnumber: 0,
+                gamemessage: "",
                 state: "CREATED",
             }); 
             console.log("Game created");

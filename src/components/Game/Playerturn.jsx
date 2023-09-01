@@ -10,7 +10,7 @@ import ChooseDices from './ChooseDices';
 /**
  * Handles all the users choices when its their turn
  */
-const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState }) => {
+const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, inputDice1, setInputDice1, inputDice2, setInputDice2, playersTurn, resetGameState, updateGameMessage }) => {
 
   const [thrownDices, setThrownDices] = useState(false);
   const [tryBust, setTryBust] = useState(false);
@@ -42,13 +42,14 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   useEffect(() => {
     let timeout;
     const handleTimeout = async () => {
+      await updateGameMessage(`${username}, timed out!`);
       await updateNextPlayer();
       await handleLeaveGame(username, documentRef, resetGameState);
       alert("Inactive for too long");
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 300000);
+      timeout = setTimeout(handleTimeout, 500000);
     }
 
     return () => {
@@ -56,7 +57,6 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     }
     
   }, [playersTurn, dice1, dice2]);
-  /*
 
   /**
    * Handles the logic if a player thinks the previous player has cheated.

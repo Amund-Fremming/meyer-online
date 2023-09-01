@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { onSnapshot } from "firebase/firestore";
+import { onSnapshot, runTransaction } from "firebase/firestore";
 import PlayerTurn from "../components/Game/Playerturn";
 import WaitingTurn from "../components/Game/WaitingTurn";
 import GameBoard from "../components/Game/GameBoard"; 
@@ -19,6 +19,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
     const [inputDice1, setInputDice1] = useState("");
     const [inputDice2, setInputDice2] = useState("");
     const [playerInTurn, setPlayerInTurn] = useState({});
+    const [gameMessage, setGameMessage] = useState("");
 
     useEffect(() => {
         if(!documentRef) return;
@@ -37,11 +38,31 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
             setPlayersTurn(snapshot.data().currentPlayer.username === username);
             setPlayers(snapshot.data().players);
             setGame(snapshot.data());
+            setGameMessage(snapshot.data().gamemessage);
         });
     
         return () => unsubscribe();
     }, [documentRef]);   
-    
+
+    /**
+     * Updates the gamemessage in the database.
+     */
+    const updateGameMessage = async (message) => {
+        try {
+            const updateGameMessageTransaction = async (transaction) => {
+                const docSnapshot = await transaction.get(documentRef);
+                if(!docSnapshot.exists) {
+                    throw new Error("Document does not exist!");
+                }
+
+                transaction.update(documentRef, { gamemessage: message });
+
+                await runTransaction(db, updateGameMessageTransaction);
+            };
+        } catch (err) {
+            console.log("Error: " + err.message);
+        }
+    };
 
     return(
         <div
@@ -53,7 +74,7 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
             >
                 Leave
             </button>
-            <Header /> 
+            <Header gameMessage={gameMessage} /> 
             <GameBoard
                 players={players}
                 playerInTurn={playerInTurn}
@@ -75,6 +96,8 @@ const Game = ({ gameid, username, documentRef, saveInSessionStorage, resetGameSt
                     playersTurn={playersTurn}
                     playerInTurn={playerInTurn}
                     resetGameState={resetGameState}
+                    setGameMessage={setGameMessage}
+                    updateGameMessage={updateGameMessage}
                 /> :
                 <WaitingTurn players={players} />
             }      

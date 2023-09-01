@@ -1,18 +1,9 @@
 <img src="src/img/quote.png" alt="Alt" width="200">
 
-### Må ordnes
-- (bildeopplastning ved username)???
-- (Finn måte å avslutte spillet)
+### Neste
+- Ha en h1 som vises i game til alle om en spiller prøver å buste og resultat, eller om en spiller fikk for lav score, må fjernes etter kort tid
 - Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
-
-### Neste
-- Når spiller leaver game så blir ikke currenPlayer oppdatert riktig
-- Ha en h1 som vises i game til alle om en spiller prøver å buste og resultat, eller om en spiller fikk for lav score, må fjernes etter kort tid
-
-
-- lagre gamestate i Playerturn så samme state om refresh
-- (Regne ut antall slurker, ut ifra hvor feil man busta?)
 
 <br/><br/>
  
@@ -39,7 +30,7 @@
 
 <br />
 
-### How to use commandShortcuts.sh
+#### How to use commandShortcuts.sh
 list all commands
 ```
 sh commandShortcuts help
