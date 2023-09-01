@@ -1,13 +1,10 @@
-<img src="src/img/quote.png" alt="Alt" width="200">
 
-### Neste
-- Ha en h1 som vises i game til alle om en spiller prøver å buste og resultat, eller om en spiller fikk for lav score, må fjernes etter kort tid
-- Lage tutorial komponent, avsnitt med grafisk figur (kvist) || video
 
 
 <br/><br/>
  
 # Meyer
+<a href="https://meyerdices.web.app/">Meyer website Live!</a>
 
 ### Kort om appen
 - Multiplayer terningspill som er laget etter <a href="https://da.wikipedia.org/wiki/Meyer_(terningspil)">Mayer</a>
