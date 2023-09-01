@@ -1,10 +1,5 @@
-
-
-
-<br/><br/>
- 
 # Meyer
-<a href="https://meyerdices.web.app/">Meyer website Live!</a>
+### <a href="https://meyerdices.web.app/">Meyer website Live!</a>
 
 ### Kort om appen
 - Multiplayer terningspill som er laget etter <a href="https://da.wikipedia.org/wiki/Meyer_(terningspil)">Mayer</a>
