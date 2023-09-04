@@ -115,7 +115,9 @@ const ViewRenderer = () => {
 
         case "TUTORIAL":
             return(
-                <Tutorial />
+                <Tutorial
+                    resetGameState={resetGameState}
+                />
             );
 
         case "DEVELOPER":
