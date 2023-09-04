@@ -22,6 +22,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   const [diceComponent2, setDiceComponent2] = useState();
   const [diceScoreMessage, setDiceScoreMessage] = useState("");
   const [diceScoreColor, setDiceScoreColor] = useState("");
+  const [playermessage, setPlayerMessage] = useState("");
 
   useEffect(() => {
     if(!documentRef) return;
@@ -77,9 +78,9 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     } else {
       console.log("Previous player got BUSTED!");
       setBustSuccess(true);
-      await updateGameMessage(`${username} tried to bust ${game.previousPlayer.username}, SUCCEED!`)
+      await updateGameMessage(`${username} tried to bust ${game.previousPlayer.username}, SUCCEEDED!`)
     } 
-    
+  
     resetGame(false);
   };
 
@@ -127,6 +128,12 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   const handleSubmitDices = async (dice1param, dice2param, timedOutPlayer) => {
     await updateAllDices(dice1param, dice2param, timedOutPlayer);
     const gameData = await fetchGameData();
+
+    console.log("1: " + inputDice1 + " I2: " + inputDice2);
+    if(inputDice1 === "" || inputDice2 === "" || inputDice1 === undefined || inputDice2 === undefined) {
+      setPlayerMessage("Choose two dices!");
+      return;
+    }
 
     const hasImproved = await hasScoreImproved(gameData);
 
@@ -385,6 +392,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     return(
       <>
         <PlayersDecition message="" color="green-400" playersTurn={true}>
+          <p className='font-oswald text-2xl text-white'>{playermessage}</p>
           <div className='flex text-green-400 items-center justify-center text-2xl'>
             <FaArrowRight />
             {diceComponent1}

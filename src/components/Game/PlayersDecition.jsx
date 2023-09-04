@@ -6,8 +6,11 @@ import ChooseDices from './ChooseDices';
  * Component for players decitions in the game
  */
 const PlayersDecition = ({ message, color, children }) => {
+
+  document.body.style.backgroundColor = "#281F3C";
+
   return (
-    <div className='flex opacity-100 bg-gradient-to-t from-[#281F3C] to-transparent flex-col justify-center items-center mt-20 h-[300px] w-full'>
+    <div className='flex opacity-100 bg-gradient-to-t from-[#281F3C] to-transparent flex-col justify-center items-center mt-20 mb-4 h-[300px] w-full'>
         <h3 className={`text-${color} text-2xl font-oswald mb-4`}>{message}</h3>
         <div className='flex flex-col justify-center items-center'>
           {children}
