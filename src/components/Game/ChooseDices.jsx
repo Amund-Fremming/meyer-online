@@ -18,7 +18,7 @@ const ChooseDices = ({ setInputDice1, setInputDice2 }) => {
 
     const handleClick = (dicenum) => {
 
-        if(dicesSelected.length == 2) {
+        if(dicesSelected.length === 2) {
             const dicePop = dicesSelected.pop();
             setToggleArr[dicePop - 1](false);
 
@@ -28,8 +28,13 @@ const ChooseDices = ({ setInputDice1, setInputDice2 }) => {
             setToggleArr[dicesSelected[0] - 1](true);
             setToggleArr[dicesSelected[1] - 1](true);
         } else {
-            dicesSelected.push(dicenum);
-            setToggleArr[dicesSelected[0] - 1](true);
+            if(dicesSelected.length === 1) {
+                dicesSelected.push(dicenum);
+                setToggleArr[dicesSelected[1] - 1](true);
+            } else {
+                dicesSelected.push(dicenum);
+                setToggleArr[dicesSelected[0] - 1](true);
+            }
         }
 
         setInputDice1(dicesSelected[0]);
