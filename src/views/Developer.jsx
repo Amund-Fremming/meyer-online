@@ -9,6 +9,8 @@ import mePixelImageSunglasses from "../img/me-pixel-sunglasses.png";
  */
 const Developer = ({ username, documentRef, resetGameState }) => {
 
+  document.body.style.backgroundColor = "white";
+
   const [profile, setProfile] = useState(mePixelImage);
   const [timer, setTimer] = useState();
   const [message, setMessage] = useState("");
@@ -52,7 +54,7 @@ const Developer = ({ username, documentRef, resetGameState }) => {
       <p className='text-gray-400 font-serif'>Engineer & CEO</p>
       <img
         onClick={handleClick} 
-        className='w-[40%]'
+        className='w-[200px]'
         src={profile}
       />
       <p className='font-serif mt-1'>{message}</p>
