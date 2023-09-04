@@ -51,7 +51,7 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
     };
 
     if(playersTurn) {
-      timeout = setTimeout(handleTimeout, 500000);
+      timeout = setTimeout(handleTimeout, 20000);
     }
 
     return () => {
