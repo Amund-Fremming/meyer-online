@@ -6,6 +6,7 @@ import PlayersDecition from './PlayersDecition';
 import NavButton from '../Universal/NavButton';
 import Dice from './Dice';
 import ChooseDices from './ChooseDices';
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 /**
  * Handles all the users choices when its their turn
@@ -383,10 +384,12 @@ const PlayerTurn = ({ documentRef, username, dice1, setDice1, dice2, setDice2, i
   } else if(thrownDices && !playedDices) { // Player have trown dices
     return(
       <>
-        <PlayersDecition message="Lie or play your two dices" color="green-400" playersTurn={true}>
-          <div className='flex'>
+        <PlayersDecition message="" color="green-400" playersTurn={true}>
+          <div className='flex text-green-400 items-center justify-center text-2xl'>
+            <FaArrowRight />
             {diceComponent1}
             {diceComponent2}
+            <FaArrowLeft />
           </div>
           <h2 className='text-xl font-oswald m-2 text-green-400'>Choose:</h2>
           <ChooseDices 
